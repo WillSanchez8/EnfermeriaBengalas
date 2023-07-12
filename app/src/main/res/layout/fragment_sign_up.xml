@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:hint="@string/repetir_contrasena"/>
+                    android:hint="@string/contrasena"/>
             </com.google.android.material.textfield.TextInputLayout>
             <Button
                 android:id="@+id/btn_register"
@@ -105,9 +105,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/registrar"
                 android:layout_gravity="center_horizontal"/>
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
