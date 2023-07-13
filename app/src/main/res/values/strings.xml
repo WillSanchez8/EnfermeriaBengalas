@@ -10,4 +10,6 @@
     <string name="email">Email</string>
     <string name="contrasena">Contraseña</string>
     <string name="repetir_contrasena">Repetir contraseña</string>
+    <string name="email_ejem">usuario@gmail.com</string>
+    <string name="logo_bengala">icono bengalas</string>
 </resources>
