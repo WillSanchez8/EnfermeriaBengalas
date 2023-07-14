@@ -7,12 +7,11 @@
     android:background="@drawable/gradiente"
     tools:context=".fragments.SignUpFragment">
 
-
     <TextView
-        android:id="@+id/tv_signin_title"
+        android:id="@+id/tv_signup_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/museomoderno_medium"
         android:text="@string/registrarse"
@@ -20,16 +19,17 @@
         android:textSize="30sp"
         android:textStyle="bold|italic"
         card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         card_view:cardCornerRadius="100dp"
         card_view:cardElevation="4dp"
-        card_view:layout_constraintTop_toBottomOf="@id/tv_signin_title"
+        card_view:layout_constraintTop_toBottomOf="@id/tv_signup_title"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent">
 
@@ -40,9 +40,9 @@
             android:src="@drawable/bengala_icon"
             android:contentDescription="@string/logo_bengala"
             />
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_signin_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -50,87 +50,133 @@
         card_view:cardElevation="4dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         card_view:layout_constraintTop_toBottomOf="@id/cv_logo"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/tv_cargo_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cargo"/>
-
-            <Spinner
-                android:id="@+id/spinner_cargo"
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <TextView
-                android:id="@+id/tv_email_label"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/email"/>
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_name_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nombre"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email_input"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/email_ejem"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    card_view:errorEnabled="true">
 
-            <TextView
-                android:id="@+id/tv_password_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contrasena"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_name_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:hint="@string/nombre"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:passwordToggleEnabled="true">
+                <TextView
+                    android:id="@+id/tv_cargo_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cargo"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_password_input"
+                <Spinner
+                    android:id="@+id/spinner_cargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:entries="@array/cargo_options"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="@string/contrasena"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    card_view:errorEnabled="true">
 
-            <TextView
-                android:id="@+id/tv_repeat_password_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/repetir_contrasena"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:hint="@string/email"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_repeat_password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:passwordToggleEnabled="true">
+                <TextView
+                    android:id="@+id/tv_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contrasena"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_repeat_password_input"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="@string/contrasena"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                    card_view:errorEnabled="true"
+                    card_view:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="@string/contrasena"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_repeat_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/repetir_contrasena"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_repeat_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:errorEnabled="true"
+                    card_view:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_repeat_password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="@string/contrasena"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_already_registered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:text="@string/ya_registrado"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
+
+    <TextView
+        android:id="@+id/authTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/seed"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:text="@string/iniciar_sesion"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
 
     <Button
         android:id="@+id/btn_register"
@@ -138,7 +184,7 @@
         android:layout_height="48dp"
         android:text="@string/registrar"
         android:textSize="20sp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="45dp"
         card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent"/>
