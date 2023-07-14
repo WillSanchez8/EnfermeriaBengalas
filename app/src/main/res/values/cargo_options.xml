@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cargo_options">
+        <item>secretarios/as</item>
+        <item>directivos</item>
+        <item>orientadores</item>
+    </string-array>
+</resources>

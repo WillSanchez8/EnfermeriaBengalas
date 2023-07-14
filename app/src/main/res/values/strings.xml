@@ -10,6 +10,10 @@
     <string name="email">Email</string>
     <string name="contrasena">Contraseña</string>
     <string name="repetir_contrasena">Repetir contraseña</string>
-    <string name="email_ejem">usuario@gmail.com</string>
     <string name="logo_bengala">icono bengalas</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="ya_registrado">¿Ya estás registrado?</string>
+    <string name="signin">Iniciar Sesión</string>
+    <string name="no_registrado">¿Aún no te registras?</string>
+    <string name="nombre">Nombre</string>
 </resources>
