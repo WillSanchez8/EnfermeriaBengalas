@@ -19,7 +19,6 @@ import androidx.navigation.Navigation
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.databinding.FragmentSignInBinding
 import com.example.enfermeriabengalas.databinding.FragmentSignUpBinding
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
