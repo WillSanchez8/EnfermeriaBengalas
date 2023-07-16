@@ -5,10 +5,198 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/greeting_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/hello_blank_fragment" />
+
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:iconifiedByDefault="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="140dp">
+
+        <GridLayout
+            android:id="@+id/grid_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="3"
+            android:alignmentMode="alignMargins"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view1"
+                style="@style/CardViewStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/stomachache"
+                        android:contentDescription="@string/stomachache" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/stomachache"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view2"
+                style="@style/CardViewStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/headache"
+                        android:contentDescription="@string/headache" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/headache"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view3"
+                style="@style/CardViewStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/dizzy"
+                        android:contentDescription="@string/dizzy" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/dizzy"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view4"
+                style="@style/CardViewStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/woman"
+                        android:contentDescription="@string/womens_health" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/womens_health"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view5"
+                style="@style/CardViewStyle">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/first_kit"
+                        android:contentDescription="@string/first_aid" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/first_aid"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_view6"
+                style="@style/CardViewStyle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        style="@style/CardViewImageStyle"
+                        android:src="@drawable/flu"
+                        android:contentDescription="@string/first_aid" />
+
+                    <TextView
+                        style="@style/CardViewTextStyle"
+                        android:text="@string/flu"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+        </GridLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageButton
+            android:id="@+id/pill_button"
+            android:src="@drawable/pill"
+            style="@style/ButtonStyle"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_pill" />
+
+        <ImageButton
+            android:id="@+id/phone_button"
+            android:src="@drawable/call"
+            style="@style/ButtonStyle"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_call"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            />
+    </LinearLayout>
 
 </FrameLayout>

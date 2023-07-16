@@ -117,8 +117,8 @@ class SignUpFragment : Fragment() {
 
         binding.btnRegister.setOnClickListener {
             val name = binding.etNameInput.text.toString()
-            val email = binding.etEmailInput.text.toString()
-            val pass = binding.etPasswordInput.text.toString()
+            val email = binding.etEmailInput.text.toString().trim()
+            val pass = binding.etPasswordInput.text.toString().trim()
             val verifyPass = binding.etRepeatPasswordInput.text.toString().trim() //trim() elimina espacios en blanco
             val cargo = binding.spinnerCargo.selectedItem.toString()
 
@@ -145,6 +145,7 @@ class SignUpFragment : Fragment() {
             }
 
             if (isValid) {
+                binding.progressBar2.visibility = View.VISIBLE
                 view?.let { contextView ->
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -169,11 +170,19 @@ class SignUpFragment : Fragment() {
                                 }
                             }
                         }
+                        binding.progressBar2.visibility = View.GONE
                     }
                 } ?: run {
                     // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar
                     // Mostrar un mensaje en el registro de la aplicación
                     Log.w("SignUpFragment", "No se puede mostrar el Snackbar porque la vista es nula")
+                }
+            }else{
+                val snackbarText = SpannableStringBuilder("Por favor, complete todos los campos")
+                snackbarText.setSpan(ForegroundColorSpan(Color.WHITE), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                snackbarText.setSpan(StyleSpan(Typeface.BOLD), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                view?.let { contextView ->
+                    Snackbar.make(contextView, snackbarText, Snackbar.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
                 }
             }
         }
