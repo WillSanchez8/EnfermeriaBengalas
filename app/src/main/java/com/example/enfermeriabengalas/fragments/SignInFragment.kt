@@ -77,8 +77,8 @@ class SignInFragment : Fragment() {
         }
 
         binding.btnRegister.setOnClickListener {
-            val email = binding.etEmailInput.text.toString()
-            val pass = binding.etPasswordInput.text.toString()
+            val email = binding.etEmailInput.text.toString().trim()
+            val pass = binding.etPasswordInput.text.toString().trim()
 
             // Validar si los campos están vacíos
             var isValid = true
@@ -86,6 +86,7 @@ class SignInFragment : Fragment() {
             isValid = validateField(pass, binding.tilPasswordInput) && isValid
 
             if (isValid) {
+                binding.progressBar2.visibility = View.VISIBLE
                 auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                     view?.let { contextView ->
                         if (task.isSuccessful) {
@@ -101,12 +102,20 @@ class SignInFragment : Fragment() {
                             } else {
                                 Snackbar.make(contextView, task.exception?.message ?: "", Snackbar.LENGTH_SHORT).show()
                             }
+                            binding.progressBar2.visibility = View.GONE
                         }
                     } ?: run {
                         // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar
                         // Mostrar un mensaje en el registro de la aplicación
                         Log.w("SignInFragment", "No se puede mostrar el Snackbar porque la vista es nula")
                     }
+                }
+            }else{
+                val snackbarText = SpannableStringBuilder("Por favor, completa todos los campos")
+                snackbarText.setSpan(ForegroundColorSpan(Color.WHITE), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                snackbarText.setSpan(StyleSpan(Typeface.BOLD), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                view?.let { contextView -> //Si la vista no es nula muestra el snackbar con ayuda de let y si es nula no muestra nada
+                    Snackbar.make(contextView, snackbarText, Snackbar.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
                 }
             }
         }
