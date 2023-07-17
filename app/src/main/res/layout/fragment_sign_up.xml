@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/museomoderno_medium"
         android:text="@string/registrarse"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold|italic"
         card_view:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:errorEnabled="true"
-                    card_view:passwordToggleEnabled="true">
+                    card_view:passwordToggleEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password_input"
@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:errorEnabled="true"
-                    card_view:passwordToggleEnabled="true">
+                    card_view:passwordToggleEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_repeat_password_input"
@@ -185,7 +185,6 @@
         android:layout_marginTop="50dp"
         android:text="@string/registrar"
         android:textSize="20sp"
-        android:layout_marginStart="220dp"
         card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent"/>

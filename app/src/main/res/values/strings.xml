@@ -18,9 +18,22 @@
     <string name="btn_pill">Botón de pastilla</string>
     <string name="btn_call">Botón de teléfono</string>
     <string name="stomachache">Dolor de\nestómago</string>
-    <string name="headache">Dolor de cabeza</string>
+    <string name="headache">Dolor de\ncabeza</string>
     <string name="dizzy">Mareo</string>
     <string name="first_aid">Kit de primeros\nauxilios</string>
     <string name="womens_health">Mujeres</string>
-    <string name="flu">Gripe o Fiebre</string>
+    <string name="flu">Gripe o\nFiebre</string>
+    <string name="search_hint">Buscar medicamento</string>
+    <string name="search_description">Buscador de medicamentos</string>
+    <string name="saludo">Hola</string>
+    <string name="btn_logout">Cerrar Sesión</string>
+    <string name="medicine">Imagen Medicamento</string>
+    <string name="trash">Icono de bote de basura</string>
+    <string name="edit">Icono de lápiz</string>
+    <string name="back">Icono de flecha</string>
+    <string name="forgot_password">Olvide mi contraseña</string>
+    <string name="send">Enviar</string>
+    <string name="res_password">Restablecer contraseña</string>
+    <string name="res_password_description">Ingrese su correo electrónico para restablecer su contraseña</string>
+    <string name="logo_pass">logo restablecer contraseña</string>
 </resources>

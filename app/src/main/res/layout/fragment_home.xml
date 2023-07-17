@@ -10,9 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
+        android:textSize="25dp"
+        android:textStyle="bold|italic"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/saludo" />
 
 
     <com.google.android.material.search.SearchBar
@@ -21,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80dp"
+        android:hint="@string/search_hint"
         android:iconifiedByDefault="false" />
 
     <LinearLayout
@@ -171,7 +174,6 @@
         </GridLayout>
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -182,14 +184,14 @@
 
         <ImageButton
             android:id="@+id/pill_button"
-            android:src="@drawable/pill"
+            android:src="@drawable/icon_pill"
             style="@style/ButtonStyle"
             android:background="@android:color/transparent"
             android:contentDescription="@string/btn_pill" />
 
         <ImageButton
             android:id="@+id/phone_button"
-            android:src="@drawable/call"
+            android:src="@drawable/icon_call"
             style="@style/ButtonStyle"
             android:background="@android:color/transparent"
             android:contentDescription="@string/btn_call"
@@ -198,5 +200,14 @@
             android:layout_marginEnd="10dp"
             />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_logout"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="635dp"
+        />
 
 </FrameLayout>
