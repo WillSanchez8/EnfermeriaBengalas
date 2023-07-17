@@ -22,12 +22,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUpFragment : Fragment() {
 
     private lateinit var auth:FirebaseAuth
     private lateinit var navControl: NavController
     private lateinit var binding: FragmentSignUpBinding
+    private lateinit var databaseRef: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -149,14 +152,13 @@ class SignUpFragment : Fragment() {
                 view?.let { contextView ->
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            /* Guardar el nombre y el cargo del usuario en la base de datos
+                            //Guardar el nombre y el cargo del usuario en la base de datos
                             val uid = auth.currentUser?.uid
                             if (uid != null) {
-                                val database = FirebaseDatabase.getInstance()
-                                val ref = database.getReference("users").child(uid)
-                                ref.child("name").setValue(name)
-                                ref.child("cargo").setValue(cargo)
-                            }*/
+                                databaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+                                databaseRef.child("name").setValue(name)
+                                databaseRef.child("cargo").setValue(cargo)
+                            }
                             Snackbar.make(contextView, "Registro exitoso", Snackbar.LENGTH_SHORT).show()
                             navControl.navigate(R.id.action_signUpFragment_to_homeFragment)
                         } else {
@@ -175,15 +177,10 @@ class SignUpFragment : Fragment() {
                 } ?: run {
                     // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar
                     // Mostrar un mensaje en el registro de la aplicación
-                    Log.w("SignUpFragment", "No se puede mostrar el Snackbar porque la vista es nula")
+                    showErrorSnackbar("No se puede mostrar el Snackbar porque la vista es nula")
                 }
             }else{
-                val snackbarText = SpannableStringBuilder("Por favor, complete todos los campos")
-                snackbarText.setSpan(ForegroundColorSpan(Color.WHITE), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                snackbarText.setSpan(StyleSpan(Typeface.BOLD), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                view?.let { contextView ->
-                    Snackbar.make(contextView, snackbarText, Snackbar.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
-                }
+                showErrorSnackbar("Por favor, complete todos los campos")
             }
         }
     }
