@@ -10,6 +10,8 @@ import androidx.navigation.Navigation
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
 
@@ -31,11 +33,31 @@ class HomeFragment : Fragment() {
 
         init(view)
         registerEvents()
+        showGreeting()
     }
 
     private fun init(view: View) {
         navControl = Navigation.findNavController(view)
         auth = FirebaseAuth.getInstance()
+    }
+
+    private fun showGreeting() {
+        val user = auth.currentUser
+        if (user != null) {
+            val uid = user.uid
+            val databaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+            databaseRef.child("name").get().addOnSuccessListener { dataSnapshot ->
+                val name = dataSnapshot.value.toString()
+                val cal = Calendar.getInstance()
+                val hour = cal.get(Calendar.HOUR_OF_DAY)
+                val greeting = when {
+                    hour < 12 -> "Buenos días $name"
+                    hour < 18 -> "Buenas tardes $name"
+                    else -> "Buenas noches $name"
+                }
+                binding.greetingTextview.text = greeting
+            }
+        }
     }
 
     private fun registerEvents() {
@@ -44,6 +66,8 @@ class HomeFragment : Fragment() {
             navControl.navigate(R.id.action_homeFragment_to_signInFragment)
         }
 
-
+        binding.pillButton.setOnClickListener {
+            navControl.navigate(R.id.action_homeFragment_to_addMedicineFragment)
+        }
     }
 }

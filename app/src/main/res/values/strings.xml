@@ -25,7 +25,7 @@
     <string name="flu">Gripe o\nFiebre</string>
     <string name="search_hint">Buscar medicamento</string>
     <string name="search_description">Buscador de medicamentos</string>
-    <string name="saludo">Hola</string>
+    <string name="saludo">Bienvenido</string>
     <string name="btn_logout">Cerrar Sesión</string>
     <string name="medicine">Imagen Medicamento</string>
     <string name="trash">Icono de bote de basura</string>
@@ -36,4 +36,12 @@
     <string name="res_password">Restablecer contraseña</string>
     <string name="res_password_description">Ingrese su correo electrónico para restablecer su contraseña</string>
     <string name="logo_pass">logo restablecer contraseña</string>
+    <string name="btn_help">Botón de ayuda</string>
+    <string name="title_new_medicine">Nuevo medicamento</string>
+    <string name="add_medicine">Agregar\nmedicamento</string>
+    <string name="medicine_name">Nombre del medicamento</string>
+    <string name="medicine_category">Categoría del medicamento</string>
+    <string name="medicine_description">Descripción del medicamento</string>
+    <string name="medicine_quantity">Cantidad del medicamento</string>
+
 </resources>
