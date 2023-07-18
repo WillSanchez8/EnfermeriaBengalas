@@ -82,6 +82,7 @@ class ForgotPassFragment : Fragment() {
             if (validateField(binding.etEmailInput.text.toString(), binding.tilEmailInput)) {
                 // Obtener el valor del campo de correo electrónico
                 val email = binding.etEmailInput.text.toString()
+                binding.progressBar2.visibility = View.VISIBLE
                 // Enviar la solicitud de restablecimiento de contraseña
                 auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
                     view?.let { contextView ->
@@ -99,6 +100,7 @@ class ForgotPassFragment : Fragment() {
                             showErrorSnackbar("No se pudo enviar el correo electrónico")
                         }
                     }
+                    binding.progressBar2.visibility = View.GONE
                 }
             }
         }

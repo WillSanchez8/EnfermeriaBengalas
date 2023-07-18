@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_options">
+        <item>Dolor de estómago</item>
+        <item>Dolor de cabeza</item>
+        <item>Mareo</item>
+        <item>Mujeres</item>
+        <item>Kit de primeros auxilios</item>
+        <item>Gripe o Fiebre</item>
+    </string-array>
+</resources>

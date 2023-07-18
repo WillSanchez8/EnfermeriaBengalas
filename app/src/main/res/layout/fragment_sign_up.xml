@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:errorEnabled="true"
-                    card_view:passwordToggleEnabled="false">
+                    card_view:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_password_input"
@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:errorEnabled="true"
-                    card_view:passwordToggleEnabled="false">
+                    card_view:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_repeat_password_input"
