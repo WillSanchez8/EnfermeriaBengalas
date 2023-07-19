@@ -55,6 +55,7 @@
                         android:contentDescription="@string/stomachache" />
 
                     <TextView
+                        android:id="@+id/category_stomachache"
                         style="@style/CardViewTextStyle"
                         android:text="@string/stomachache"
                         android:textStyle="bold"
@@ -77,6 +78,7 @@
                         android:contentDescription="@string/headache" />
 
                     <TextView
+                        android:id="@+id/category_headache"
                         style="@style/CardViewTextStyle"
                         android:text="@string/headache"
                         android:textStyle="bold"
@@ -99,6 +101,7 @@
                         android:contentDescription="@string/dizzy" />
 
                     <TextView
+                        android:id="@+id/category_dizzy"
                         style="@style/CardViewTextStyle"
                         android:text="@string/dizzy"
                         android:textStyle="bold"
@@ -121,6 +124,7 @@
                         android:contentDescription="@string/womens_health" />
 
                     <TextView
+                        android:id="@+id/category_womens_health"
                         style="@style/CardViewTextStyle"
                         android:text="@string/womens_health"
                         android:textStyle="bold"
@@ -142,6 +146,7 @@
                         android:contentDescription="@string/first_aid" />
 
                     <TextView
+                        android:id="@+id/category_first_aid"
                         style="@style/CardViewTextStyle"
                         android:text="@string/first_aid"
                         android:textStyle="bold"
@@ -164,6 +169,7 @@
                         android:contentDescription="@string/first_aid" />
 
                     <TextView
+                        android:id="@+id/category_flu"
                         style="@style/CardViewTextStyle"
                         android:text="@string/flu"
                         android:textStyle="bold" />

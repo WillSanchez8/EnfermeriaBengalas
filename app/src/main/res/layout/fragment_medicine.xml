@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/gradiente"
     tools:context=".fragments.MedicineFragment">
 
     <LinearLayout
@@ -20,13 +21,18 @@
 
         <TextView
             android:id="@+id/category_title"
+            android:layout_marginTop="16dp"
+            android:textSize="30sp"
+            android:layout_marginStart="20dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold|italic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center" />
     </LinearLayout>
-
+<!--
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicines_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 </LinearLayout>

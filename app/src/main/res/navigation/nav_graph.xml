@@ -60,12 +60,22 @@
         <action
             android:id="@+id/action_homeFragment_to_addMedicineFragment"
             app:destination="@id/addMedicineFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_medicineFragment"
+            app:destination="@id/medicineFragment" />
     </fragment>
     <fragment
         android:id="@+id/medicineFragment"
         android:name="com.example.enfermeriabengalas.fragments.MedicineFragment"
         android:label="fragment_medicine"
-        tools:layout="@layout/fragment_medicine" />
+        tools:layout="@layout/fragment_medicine" >
+        <action
+            android:id="@+id/action_medicineFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/forgotPassFragment"
         android:name="com.example.enfermeriabengalas.fragments.ForgotPassFragment"
@@ -78,5 +88,18 @@
         android:id="@+id/addMedicineFragment"
         android:name="com.example.enfermeriabengalas.fragments.AddMedicineFragment"
         android:label="fragment_add_medicine"
-        tools:layout="@layout/fragment_add_medicine" />
+        tools:layout="@layout/fragment_add_medicine" >
+        <action
+            android:id="@+id/action_addMedicineFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.example.enfermeriabengalas.fragments.SupportFragment"
+        android:label="fragment_support"
+        tools:layout="@layout/fragment_support" >
+        <action
+            android:id="@+id/action_supportFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>
