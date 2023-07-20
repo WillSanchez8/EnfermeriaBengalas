@@ -45,4 +45,6 @@
     <string name="medicine_quantity">Cantidad del medicamento</string>
     <string name="support">SOPORTE</string>
     <string name="change_icon">Cambiar icono</string>
+    <string name="authorizate">Icono para autorizar</string>
+
 </resources>
