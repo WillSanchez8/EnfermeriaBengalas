@@ -146,13 +146,13 @@ class AddMedicineFragment : Fragment() {
         binding.btnAddMedicine.setOnClickListener {
             val medicineName = binding.etMedicineNameInput.text.toString()
             val medicineDescription = binding.etMedicineDescriptionInput.text.toString()
-            val medicineQuantity = binding.etMedicineQuantityInput.text.toString()
+            val medicineQuantity = binding.etMedicineQuantityInput.text.toString().toIntOrNull() ?: 0
             val medicineCategory = binding.spinnerMedicineCategory.selectedItem.toString()
 
             var isValid = true
             isValid = validateField(medicineName, binding.tilMedicineNameInput) && isValid
             isValid = validateField(medicineDescription, binding.tilMedicineDescriptionInput) && isValid
-            isValid = validateField(medicineQuantity, binding.tilMedicineQuantityInput) && isValid
+            isValid = validateField(medicineQuantity.toString(), binding.tilMedicineQuantityInput) && isValid
 
             if (isValid) {
                 binding.progressBar2.visibility = View.VISIBLE

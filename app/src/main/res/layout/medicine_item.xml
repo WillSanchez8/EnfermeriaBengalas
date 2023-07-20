@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:orientation="vertical"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -11,12 +13,13 @@
         android:orientation="horizontal">
 
         <ImageView
+
+            android:id="@+id/medicine_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/icon_medicine"
-            android:contentDescription="@string/medicine"
-            />
+            android:contentDescription="@string/medicine" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -25,19 +28,28 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/medicine_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre del medicamento" />
+                android:text="@string/medicine_name" />
 
             <TextView
+                android:id="@+id/medicine_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descripción del medicamento" />
+                android:text="@string/medicine_description" />
 
             <TextView
+                android:id="@+id/medicine_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Disponibilidad del medicamento" />
+                android:text="@string/medicine_category" />
+
+            <TextView
+                android:id="@+id/medicine_availability"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/medicine_quantity" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,42 +57,45 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="10dp">
 
-            <ImageButton
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/trash"
-                android:src="@drawable/icon_trash" />
+                android:orientation="horizontal">
 
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/delete_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/trash"
+                    android:src="@drawable/icon_trash" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/edit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/edit"
+                    android:src="@drawable/icon_edit" />
+
+            </LinearLayout>
 
             <ImageButton
+                android:id="@+id/expand_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/edit"
-                android:src="@drawable/icon_edit" />
+                android:contentDescription="@string/authorizate"
+                android:src="@drawable/icon_authorizate" />
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/expanded_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- Contenido adicional al expandir el CardView -->
-        <TextView
-            style="@style/CardViewTextStyle" />
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
-            app:icon="@drawable/icon_authorizate" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
