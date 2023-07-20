@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_medicineFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_medicineFragment_to_addMedicineFragment"
+            app:destination="@id/addMedicineFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPassFragment"
@@ -92,6 +95,9 @@
         <action
             android:id="@+id/action_addMedicineFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_addMedicineFragment_to_medicineFragment"
+            app:destination="@id/medicineFragment" />
     </fragment>
     <fragment
         android:id="@+id/supportFragment"

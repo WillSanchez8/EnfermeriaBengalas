@@ -1,5 +1,5 @@
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
+package com.example.enfermeriabengalas.adapters
+
 import android.content.res.Resources
 import com.example.enfermeriabengalas.databinding.MedicineItemBinding
 import android.view.LayoutInflater
@@ -8,10 +8,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.models.Medicine
+import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 
-class MedicineAdapter(var medicines: List<Medicine>) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
+// En com.example.enfermeriabengalas.adapters.MedicineAdapter.kt
+interface MedicineAdapterListener {
+    fun onEditButtonClicked(medicine: Medicine)
+    fun onDeleteButtonClicked(medicine: Medicine)
+    fun onAuthorizateButtonClicked(medicine: Medicine)
+}
+
+class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapterListener, val viewModel: MedicineViewModel) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewBinding = MedicineItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -48,6 +56,16 @@ class MedicineAdapter(var medicines: List<Medicine>) : RecyclerView.Adapter<Medi
             .translationX(0f) // Animar a su posición final
             .setDuration(300) // Establecer la duración de la animación
             .start() // Iniciar la animación
+        holder.viewBinding.editButton.setOnClickListener {
+            viewModel.medicineToEdit.value = medicine
+            listener.onEditButtonClicked(medicine)
+        }
+        holder.viewBinding.deleteButton.setOnClickListener {
+            listener.onDeleteButtonClicked(medicine)
+        }
+        holder.viewBinding.authorizateButton.setOnClickListener {
+            listener.onAuthorizateButtonClicked(medicine)
+        }
     }
 
     override fun getItemCount(): Int = medicines.size
