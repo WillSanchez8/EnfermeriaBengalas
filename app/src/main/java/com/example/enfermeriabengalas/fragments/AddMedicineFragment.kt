@@ -18,18 +18,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.databinding.FragmentAddMedicineBinding
+import com.example.enfermeriabengalas.models.Medicine
+import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import java.util.UUID
 
 class AddMedicineFragment : Fragment() {
 
@@ -39,6 +39,7 @@ class AddMedicineFragment : Fragment() {
     private lateinit var databaseRef: DatabaseReference
     private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
     private var selectedImageUri: Uri? = null
+    private lateinit var viewModel: MedicineViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +55,30 @@ class AddMedicineFragment : Fragment() {
 
         init(view)
         registerEvents()
+
+        // Observa cambios en la propiedad medicineToEdit del ViewModel
+        viewModel.medicineToEdit.observe(viewLifecycleOwner) { medicine ->
+            if (medicine != null) {
+                // El usuario está editando un medicamento existente
+                // Cambia el título del fragmento a "Editar Medicamento"
+                binding.tvSignupTitle.text = getString(R.string.title_edit_medicine)
+                // Cambia el texto del botón a "Guardar cambios"
+                binding.btnAddMedicine.text = getString(R.string.save_changes)
+
+                // Completa los campos de texto con los valores actuales del medicamento
+                binding.etMedicineNameInput.setText(medicine.name)
+                binding.etMedicineDescriptionInput.setText(medicine.description)
+                binding.etMedicineQuantityInput.setText(medicine.quantity.toString())
+                val categoryIndex = resources.getStringArray(R.array.category_options).indexOf(medicine.category)
+                binding.spinnerMedicineCategory.setSelection(categoryIndex)
+            } else {
+                // El usuario está agregando un nuevo medicamento
+                // Cambia el título del fragmento a "Nuevo Medicamento"
+                binding.tvSignupTitle.text = getString(R.string.title_new_medicine)
+                // Cambia el texto del botón a "Agregar medicamento"
+                binding.btnAddMedicine.text = getString(R.string.add_medicine)
+            }
+        }
 
         // Agregar TextWatchers a los campos de texto
         binding.etMedicineNameInput.addTextChangedListener(object : TextWatcher {
@@ -91,6 +116,8 @@ class AddMedicineFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         navControl = Navigation.findNavController(view)
         databaseRef = FirebaseDatabase.getInstance().reference
+        viewModel = ViewModelProvider(requireActivity()).get(MedicineViewModel::class.java)
+        viewModel.init(databaseRef)
     }
 
     private fun showErrorSnackbar(message: String) {
@@ -123,9 +150,12 @@ class AddMedicineFragment : Fragment() {
             selectedImageUri = uri
         }
     }
+
     private fun registerEvents() {
         binding.backButton.setOnClickListener {
             navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
+            // Establece la variable medicineToEdit a null
+            viewModel.medicineToEdit.value = null
         }
 
         binding.btnChangeIcon.setOnClickListener {
@@ -156,64 +186,37 @@ class AddMedicineFragment : Fragment() {
 
             if (isValid) {
                 binding.progressBar2.visibility = View.VISIBLE
-                // Asigna el valor de selectedImageUri a una variable local
-                val imageUri = selectedImageUri
+                // Crea una instancia de Medicine con los datos ingresados por el usuario
+                val medicine = Medicine(
+                    name = medicineName,
+                    description = medicineDescription,
+                    quantity = medicineQuantity,
+                    category = medicineCategory,
+                    image = selectedImageUri?.toString()
+                )
 
-                // Comprueba si imageUri no es nula
-                if (imageUri != null) {
-                    // Genera un nombre de archivo único utilizando un UUID
-                    val fileName = "imagen_${UUID.randomUUID()}.jpg"
-                    // Crea una referencia a la ruta completa del archivo en Firebase Storage
-                    val storageRef = Firebase.storage.reference.child("imagenes/$fileName")
-
-                    // Sube el archivo a Firebase Storage
-                    storageRef.putFile(imageUri)
-                        .addOnSuccessListener {
-                            // El archivo se subió correctamente
-                            // Obtiene la URL de descarga del archivo
-                            storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-                                // Guarda los datos del medicamento en la base de datos, incluyendo la URL de descarga de la imagen
-                                val medicine = hashMapOf(
-                                    "name" to medicineName,
-                                    "description" to medicineDescription,
-                                    "quantity" to medicineQuantity,
-                                    "category" to medicineCategory,
-                                    "image" to downloadUrl.toString()
-                                )
-
-                                // Guarda los datos del medicamento en una ruta global accesible para todos los usuarios
-                                databaseRef.child("medicines").push().setValue(medicine)
-                                    .addOnSuccessListener {
-                                        navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
-                                        Snackbar.make(binding.root, "Medicamento agregado con éxito", Snackbar.LENGTH_SHORT).show()
-                                    }
-                                    .addOnFailureListener {
-                                        showErrorSnackbar("Error al agregar el medicamento")
-                                    }
-                            }
-                        }
-                        .addOnFailureListener {
-                            showErrorSnackbar("Error al subir la imagen")
-                        }
+                if (viewModel.medicineToEdit.value == null) {
+                    // El usuario está agregando un nuevo medicamento
+                    // Llama a la función addMedicine del ViewModel para agregar el medicamento a la base de datos
+                    viewModel.addMedicine(medicine, onSuccess = {
+                        navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
+                        Snackbar.make(binding.root, "Medicamento agregado con éxito", Snackbar.LENGTH_SHORT).show()
+                    }, onFailure = { message ->
+                        showErrorSnackbar(message)
+                    })
                 } else {
-                    // imageUri es nula
-                    // Guarda los datos del medicamento en la base de datos sin incluir la URL de descarga de la imagen
-                    val medicine = hashMapOf(
-                        "name" to medicineName,
-                        "description" to medicineDescription,
-                        "quantity" to medicineQuantity,
-                        "category" to medicineCategory
-                    )
-
-                    // Guarda los datos del medicamento en una ruta global accesible para todos los usuarios
-                    databaseRef.child("medicines").push().setValue(medicine)
-                        .addOnSuccessListener {
-                            navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
-                            Snackbar.make(binding.root, "Medicamento agregado con éxito", Snackbar.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener {
-                            showErrorSnackbar("Error al agregar el medicamento")
-                        }
+                    // El usuario está editando un medicamento existente
+                    // Llama a la función updateMedicine del ViewModel para actualizar el medicamento en la base de datos
+                    // El usuario está editando un medicamento existente
+                    // Carga la imagen del medicamento en la vista
+                    viewModel.updateMedicine(viewModel.medicineToEdit.value!!, medicine, onSuccess = {
+                        navControl.navigate(R.id.action_addMedicineFragment_to_medicineFragment)
+                        Snackbar.make(binding.root, "Cambios guardados con éxito", Snackbar.LENGTH_SHORT).show()
+                    }, onFailure = { message ->
+                        showErrorSnackbar(message)
+                    })
+                    // Establece la variable medicineToEdit a null
+                    viewModel.medicineToEdit.value = null
                 }
                 binding.progressBar2.visibility = View.GONE
             } else {

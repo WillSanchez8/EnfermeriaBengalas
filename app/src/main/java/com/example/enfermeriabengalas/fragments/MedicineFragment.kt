@@ -1,6 +1,6 @@
 package com.example.enfermeriabengalas.fragments
 
-import MedicineAdapter
+import com.example.enfermeriabengalas.adapters.MedicineAdapter
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -17,8 +17,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.enfermeriabengalas.R
+import com.example.enfermeriabengalas.adapters.MedicineAdapterListener
 import com.example.enfermeriabengalas.databinding.FragmentMedicineBinding
+import com.example.enfermeriabengalas.models.Medicine
 import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -49,7 +52,35 @@ class MedicineFragment : Fragment() {
             showErrorSnackbar(message)
         }
         // Create and set an adapter for the RecyclerView
-        val adapter = MedicineAdapter(viewModel.medicines.value ?: emptyList())
+        val adapter = MedicineAdapter(viewModel.medicines.value ?: emptyList(), object :
+            MedicineAdapterListener {
+            override fun onEditButtonClicked(medicine: Medicine) {
+                // Establecer la propiedad medicineToEdit del ViewModel con el medicamento seleccionado
+                viewModel.medicineToEdit.value = medicine
+                // Navegar al fragmento AddMedicineFragment
+                navControl.navigate(R.id.action_medicineFragment_to_addMedicineFragment)
+            }
+
+            override fun onDeleteButtonClicked(medicine: Medicine) {
+                // Mostrar un cuadro de diálogo para confirmar la eliminación del medicamento
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Eliminar medicamento")
+                    .setMessage("¿Estás seguro de que deseas eliminar este medicamento?")
+                    .setNegativeButton("Cancelar") { dialog, which ->
+                        // No hacer nada si el usuario cancela la eliminación
+                    }
+                    .setPositiveButton("Sí") { dialog, which ->
+                        // Llamar a la función deleteMedicine del ViewModel para eliminar el medicamento
+                        viewModel.deleteMedicine(medicine)
+                        Snackbar.make(binding.root, "Medicamento eliminado con éxito", Snackbar.LENGTH_SHORT).show()
+                    }
+                    .show()
+            }
+
+            override fun onAuthorizateButtonClicked(medicine: Medicine) {
+                // Agregar aquí la lógica para autorizar el medicamento
+            }
+        }, viewModel)
         binding.medicinesRecyclerView.adapter = adapter
         binding.medicinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

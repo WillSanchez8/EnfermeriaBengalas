@@ -46,5 +46,7 @@
     <string name="support">SOPORTE</string>
     <string name="change_icon">Cambiar icono</string>
     <string name="authorizate">Icono para autorizar</string>
+    <string name="title_edit_medicine">Editar Medicamento</string>
+    <string name="save_changes">Guardar cambios</string>
 
 </resources>
