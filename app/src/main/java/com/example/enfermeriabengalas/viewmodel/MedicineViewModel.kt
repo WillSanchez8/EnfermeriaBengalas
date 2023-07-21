@@ -20,6 +20,7 @@ class MedicineViewModel : ViewModel() {
     val errorMessage = MutableLiveData<String>()
     private lateinit var databaseRef: DatabaseReference
     val medicineToEdit = MutableLiveData<Medicine?>()
+    val searchResults = MutableLiveData<List<Medicine>>()
 
     fun init(databaseRef: DatabaseReference) {
         this.databaseRef = databaseRef
@@ -44,6 +45,26 @@ class MedicineViewModel : ViewModel() {
                 }
                 // Update the medicines list in the viewmodel
                 medicines.value = medicinesList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                errorMessage.value = "Ocurrió un error al intentar obtener los datos de medicamentos. Por favor, inténtalo de nuevo más tarde."
+            }
+        })
+    }
+
+    fun searchMedicines(searchText: String) {
+        val medicinesRef = databaseRef.child("medicines")
+        medicinesRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val medicinesList = mutableListOf<Medicine>()
+                for (medicineSnapshot in snapshot.children) {
+                    val medicine = medicineSnapshot.getValue(Medicine::class.java)
+                    if (medicine != null && (medicine.name.contains(searchText) || medicine.category.contains(searchText))) {
+                        medicinesList.add(medicine)
+                    }
+                }
+                searchResults.value = medicinesList
             }
 
             override fun onCancelled(error: DatabaseError) {
