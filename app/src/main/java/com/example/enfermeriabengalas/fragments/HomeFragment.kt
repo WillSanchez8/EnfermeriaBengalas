@@ -106,6 +106,11 @@ class HomeFragment : Fragment() {
             navControl.navigate(R.id.action_homeFragment_to_supportFragment)
         }
 
+
+        binding.iconSearch.setOnClickListener {
+            navControl.navigate(R.id.action_homeFragment_to_searchFragment)
+        }
+
         val cardViews = listOf(binding.cardView1, binding.cardView2, binding.cardView3, binding.cardView4, binding.cardView5, binding.cardView6)
         val textViews = listOf(binding.categoryStomachache, binding.categoryHeadache, binding.categoryDizzy, binding.categoryWomensHealth, binding.categoryFirstAid, binding.categoryFlu)
         for (i in cardViews.indices) {
@@ -159,6 +164,5 @@ class HomeFragment : Fragment() {
                 }
                 .show()
         }
-
     }
 }
