@@ -11,9 +11,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/md_theme_light_onPrimary"
         android:textSize="30sp"
         android:textStyle="bold|italic"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="90dp"/>
 
     <ImageButton
         android:id="@+id/icon_search"
@@ -190,14 +191,14 @@
             android:id="@+id/pill_button"
             android:src="@drawable/icon_pill"
             style="@style/ButtonStyle"
-            android:background="@android:color/transparent"
+            android:background="@drawable/rounded_white_background"
             android:contentDescription="@string/btn_pill" />
 
         <ImageButton
             android:id="@+id/phone_button"
             android:src="@drawable/icon_call"
             style="@style/ButtonStyle"
-            android:background="@android:color/transparent"
+            android:background="@drawable/rounded_white_background"
             android:contentDescription="@string/btn_call"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -206,7 +207,7 @@
             android:id="@+id/btn_help"
             android:src="@drawable/icon_help"
             style="@style/ButtonStyle"
-            android:background="@android:color/transparent"
+            android:background="@drawable/rounded_white_background"
             android:contentDescription="@string/btn_help"
             android:layout_marginBottom="20dp"
             />

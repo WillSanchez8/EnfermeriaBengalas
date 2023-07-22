@@ -28,7 +28,10 @@ import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.Calendar
 
 class HomeFragment : Fragment() {
@@ -124,6 +127,22 @@ class HomeFragment : Fragment() {
             }
         }
 
+        val database = FirebaseDatabase.getInstance()
+        val phoneNumberRef = database.getReference("phoneNumber")
+
+        phoneNumberRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val phoneNumber = dataSnapshot.getValue(String::class.java)
+                if (phoneNumber != null) {
+                    this@HomeFragment.phoneNumber = phoneNumber
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Maneja el error
+            }
+        })
+
         binding.phoneButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Llamada")
@@ -139,6 +158,7 @@ class HomeFragment : Fragment() {
                             val newPhoneNumber = editText.text.toString()
                             if (newPhoneNumber.length in 7..12) {
                                 phoneNumber = newPhoneNumber
+                                phoneNumberRef.setValue(newPhoneNumber)
                             } else {
                                 showErrorSnackbar("El número debe tener entre 7 y 12 dígitos")
                             }

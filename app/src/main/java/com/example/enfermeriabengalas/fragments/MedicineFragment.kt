@@ -68,6 +68,7 @@ class MedicineFragment : Fragment() {
                     .setMessage("¿Estás seguro de que deseas eliminar este medicamento?")
                     .setNegativeButton("Cancelar") { dialog, which ->
                         // No hacer nada si el usuario cancela la eliminación
+                        dialog.dismiss()
                     }
                     .setPositiveButton("Sí") { dialog, which ->
                         // Llamar a la función deleteMedicine del ViewModel para eliminar el medicamento
@@ -75,10 +76,6 @@ class MedicineFragment : Fragment() {
                         Snackbar.make(binding.root, "Medicamento eliminado con éxito", Snackbar.LENGTH_SHORT).show()
                     }
                     .show()
-            }
-
-            override fun onAuthorizateButtonClicked(medicine: Medicine) {
-                // Agregar aquí la lógica para autorizar el medicamento
             }
         }, viewModel)
         binding.medicinesRecyclerView.adapter = adapter
@@ -111,9 +108,7 @@ class MedicineFragment : Fragment() {
     }
 
     private fun registerEvents() {
-        binding.backButton.setOnClickListener {
-            navControl.navigate(R.id.action_medicineFragment_to_homeFragment)
-        }
+
     }
 
     private fun showErrorSnackbar(message: String) {

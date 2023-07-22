@@ -72,12 +72,6 @@
                 android:layout_height="48dp"
                 android:entries="@array/cargo_options" />
 
-            <TextView
-                android:id="@+id/tv_email_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/email" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_email_input"
                 android:layout_width="match_parent"
@@ -92,11 +86,6 @@
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_password_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contrasena" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_password_input"
@@ -122,6 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="12dp"
+        android:textColor="@color/md_theme_light_primary"
         android:text="@string/no_registrado"
         android:textSize="14sp"
         card_view:layout_constraintStart_toStartOf="parent"
@@ -141,10 +131,10 @@
         card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
 
     <Button
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:text="@string/iniciar_sesion"
         android:textSize="20sp"
         card_view:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +152,7 @@
         android:textStyle="bold"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/btn_register" />
+        card_view:layout_constraintTop_toBottomOf="@id/btn_login" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar2"
