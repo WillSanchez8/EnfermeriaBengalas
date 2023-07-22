@@ -7,22 +7,13 @@
     android:background="@drawable/gradiente"
     tools:context=".fragments.SearchFragment">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:src="@drawable/icon_back"
-        style="@style/ButtonStyle"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:layout_margin="10dp"
-        android:layout_gravity="top|start"/>
-
     <SearchView
         android:id="@+id/search_view"
         style="@style/MySearchViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:iconifiedByDefault="false" />
@@ -31,7 +22,7 @@
         android:id="@+id/search_results_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp">
+        android:layout_marginTop="100dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/medicines_recycler_view"

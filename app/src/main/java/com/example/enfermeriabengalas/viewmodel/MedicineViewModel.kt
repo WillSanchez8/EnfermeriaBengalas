@@ -60,13 +60,12 @@ class MedicineViewModel : ViewModel() {
                 val medicinesList = mutableListOf<Medicine>()
                 for (medicineSnapshot in snapshot.children) {
                     val medicine = medicineSnapshot.getValue(Medicine::class.java)
-                    if (medicine != null && (medicine.name.contains(searchText) || medicine.category.contains(searchText))) {
+                    if (medicine != null && (medicine.name.contains(searchText) || medicine.category.contains(searchText) || medicine.description.contains(searchText))) {
                         medicinesList.add(medicine)
                     }
                 }
                 searchResults.value = medicinesList
             }
-
             override fun onCancelled(error: DatabaseError) {
                 errorMessage.value = "Ocurrió un error al intentar obtener los datos de medicamentos. Por favor, inténtalo de nuevo más tarde."
             }
@@ -167,14 +166,50 @@ class MedicineViewModel : ViewModel() {
                 val medicineSnapshot = snapshot.children.firstOrNull()
 
                 if (medicineSnapshot != null) {
-                    // Actualizar los datos del medicamento en la base de datos
-                    medicineSnapshot.ref.setValue(newMedicine)
-                        .addOnSuccessListener {
-                            onSuccess()
-                        }
-                        .addOnFailureListener {
-                            onFailure("Error al actualizar el medicamento")
-                        }
+                    // Asigna el valor de imageUri a una variable local
+                    val localImageUri = newMedicine.image?.let { Uri.parse(it) }
+
+                    // Comprueba si localImageUri no es nula y si es una URI local (no una URL de Firebase Storage)
+                    if (localImageUri != null && localImageUri.scheme == "content") {
+                        // Genera un nombre de archivo único utilizando un UUID
+                        val fileName = "imagen_${UUID.randomUUID()}.jpg"
+                        // Crea una referencia a la ruta completa del archivo en Firebase Storage
+                        val storageRef = Firebase.storage.reference.child("imagenes/$fileName")
+                        // Sube el archivo a Firebase Storage
+                        storageRef.putFile(localImageUri)
+                            .addOnSuccessListener {
+                                // El archivo se subió correctamente
+                                // Obtiene la URL de descarga del archivo
+                                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                                    // Actualiza la propiedad image del objeto newMedicine con la URL de descarga de la imagen
+                                    newMedicine.image = downloadUrl.toString()
+
+                                    // Actualizar los datos del medicamento en la base de datos
+                                    medicineSnapshot.ref.setValue(newMedicine)
+                                        .addOnSuccessListener {
+                                            onSuccess()
+                                        }
+                                        .addOnFailureListener {
+                                            onFailure("Error al actualizar el medicamento")
+                                        }
+                                }
+                            }
+                            .addOnFailureListener {
+                                onFailure("Error al subir la imagen")
+                            }
+                    } else {
+                        // localImageUri es nula o es una URL de Firebase Storage
+                        // Actualiza los datos del medicamento en la base de datos sin subir nuevamente la imagen
+
+                        // Actualizar los datos del medicamento en la base de datos
+                        medicineSnapshot.ref.setValue(newMedicine)
+                            .addOnSuccessListener {
+                                onSuccess()
+                            }
+                            .addOnFailureListener {
+                                onFailure("Error al actualizar el medicamento")
+                            }
+                    }
                 } else {
                     onFailure("No se encontró el medicamento a editar")
                 }

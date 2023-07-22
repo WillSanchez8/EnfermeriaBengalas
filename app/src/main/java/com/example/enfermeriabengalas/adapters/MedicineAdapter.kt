@@ -1,8 +1,10 @@
 package com.example.enfermeriabengalas.adapters
 
 import android.content.res.Resources
+import android.text.TextUtils
 import com.example.enfermeriabengalas.databinding.MedicineItemBinding
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,6 @@ import com.squareup.picasso.Picasso
 interface MedicineAdapterListener {
     fun onEditButtonClicked(medicine: Medicine)
     fun onDeleteButtonClicked(medicine: Medicine)
-    fun onAuthorizateButtonClicked(medicine: Medicine)
 }
 
 class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapterListener, val viewModel: MedicineViewModel) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
@@ -51,6 +52,18 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
 
         // Agregar animación al CardView
         val cardView = holder.itemView as MaterialCardView
+        val descriptionTextView = holder.viewBinding.medicineDescription
+        descriptionTextView.maxLines = 1
+        descriptionTextView.ellipsize = TextUtils.TruncateAt.END
+
+        cardView.setOnClickListener {
+            if (descriptionTextView.maxLines == 1) {
+                descriptionTextView.maxLines = Int.MAX_VALUE
+            } else {
+                descriptionTextView.maxLines = 1
+            }
+        }
+
         cardView.translationX = screenWidth.toFloat() // Comenzar fuera de la pantalla a la derecha
         cardView.animate()
             .translationX(0f) // Animar a su posición final
@@ -62,9 +75,6 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
         }
         holder.viewBinding.deleteButton.setOnClickListener {
             listener.onDeleteButtonClicked(medicine)
-        }
-        holder.viewBinding.authorizateButton.setOnClickListener {
-            listener.onAuthorizateButtonClicked(medicine)
         }
     }
 

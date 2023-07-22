@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -107,7 +108,7 @@ class SignInFragment : Fragment() {
             navControl.navigate(R.id.action_signInFragment_to_forgotPassFragment4)
         }
 
-        binding.btnRegister.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             val email = binding.etEmailInput.text.toString().trim()
             val pass = binding.etPasswordInput.text.toString().trim()
             val cargo = binding.spinnerCargo.selectedItem.toString()
@@ -122,39 +123,76 @@ class SignInFragment : Fragment() {
                 auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                     view?.let { contextView ->
                         if (task.isSuccessful) {
-                            // Obtener una referencia al nodo del usuario en la base de datos
-                            val uid = auth.currentUser?.uid.toString()
-                            val userRef = databaseRef.child(uid)
+                            // El inicio de sesión fue exitoso
+                            val user = auth.currentUser
+                            user?.reload()?.addOnCompleteListener { reloadTask ->
+                                if (reloadTask.isSuccessful) {
+                                    if (user.isEmailVerified) {
+                                        // La dirección de correo electrónico del usuario ha sido verificada
+                                        // Obtener una referencia al nodo del usuario en la base de datos
+                                        val uid = auth.currentUser?.uid.toString()
+                                        val userRef = databaseRef.child(uid)
 
-                            // Leer el valor del campo "cargo" del usuario en la base de datos
-                            userRef.child("cargo").addListenerForSingleValueEvent(object :
-                                ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val cargoInDatabase = dataSnapshot.getValue(String::class.java)
-                                    // Comprobar si el cargo es el mismo que se ingresó en la vista de inicio de sesión
-                                    if (cargoInDatabase == cargo) {
-                                        // El cargo es correcto, continuar con el inicio de sesión
-                                        Snackbar.make(contextView, "Sesión iniciada correctamente", Snackbar.LENGTH_SHORT).show()
-                                        navControl.navigate(R.id.action_signInFragment_to_homeFragment)
+                                        // Leer el valor del campo "cargo" del usuario en la base de datos
+                                        userRef.child("cargo").addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
+                                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                                val cargoInDatabase =
+                                                    dataSnapshot.getValue(String::class.java)
+                                                // Comprobar si el cargo es el mismo que se ingresó en la vista de inicio de sesión
+                                                if (cargoInDatabase == cargo) {
+                                                    // El cargo es correcto, continuar con el inicio de sesión
+                                                    Snackbar.make(
+                                                        contextView,
+                                                        "Sesión iniciada correctamente",
+                                                        Snackbar.LENGTH_SHORT
+                                                    ).show()
+                                                    navControl.navigate(R.id.action_signInFragment_to_homeFragment)
+                                                } else {
+                                                    // El cargo no es correcto, mostrar un mensaje de error
+                                                    showErrorSnackbar("El cargo seleccionado no es el correspondiente, intente nuevamente")
+                                                }
+                                                binding.progressBar2.visibility = View.GONE
+                                            }
+
+                                            override fun onCancelled(databaseError: DatabaseError) {
+                                                // Mostrar un mensaje de error al usuario
+                                                showErrorSnackbar("Ocurrió un error al intentar leer los datos. Inténtalo nuevamente.")
+                                                binding.progressBar2.visibility = View.GONE
+                                            }
+                                        })
                                     } else {
-                                        // El cargo no es correcto, mostrar un mensaje de error
-                                        showErrorSnackbar("El cargo seleccionado no es el correspondiente, intente nuevamente")
+                                        // La dirección de correo electrónico del usuario no ha sido verificada
+                                        // Mostrar un mensaje al usuario indicando que debe verificar su dirección de correo electrónico
+                                        showErrorSnackbar("Por favor, verifica tu dirección de correo electrónico para poder iniciar sesión.")
+                                        binding.progressBar2.visibility = View.GONE
                                     }
+                                } else {
+                                    // Ocurrió un error al recargar la información del usuario
+                                    showErrorSnackbar(reloadTask.exception?.message ?: "Ocurrió un error al recargar la información del usuario")
+                                    binding.progressBar2.visibility = View.GONE
                                 }
-
-                                override fun onCancelled(databaseError: DatabaseError) {
-                                    // Mostrar un mensaje de error al usuario
-                                    showErrorSnackbar("Ocurrió un error al intentar leer los datos. Inténtalo nuevamente.")
-                                }
-                            })
+                            }
                         } else {
-                            if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                // El correo electrónico o la contraseña son incorrectos
-                                showErrorSnackbar("El correo o la contraseña son inválidos, inténtalo nuevamente")
-                            } else {
-                                Snackbar.make(contextView, task.exception?.message ?: "", Snackbar.LENGTH_SHORT).show()
+                            when (task.exception) {
+                                is FirebaseAuthInvalidUserException -> {
+                                    // El correo electrónico no está registrado o ha sido deshabilitado
+                                    showErrorSnackbar("Este correo no está registrado o ha sido deshabilitado")
+                                }
+                                is FirebaseAuthInvalidCredentialsException -> {
+                                    // La contraseña es incorrecta
+                                    showErrorSnackbar("El correo o la contraseña son incorrectos, inténtelo nuevamente")
+                                }
+                                else -> {
+                                    Snackbar.make(
+                                        contextView,
+                                        task.exception?.message ?: "Ocurrió un error",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                             binding.progressBar2.visibility = View.GONE
+
                         }
                     } ?: run {
                         // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar
@@ -162,7 +200,7 @@ class SignInFragment : Fragment() {
                         showErrorSnackbar("No se puede mostrar el Snackbar porque la vista es nula")
                     }
                 }
-            }else{
+            } else {
                 showErrorSnackbar("Por favor, complete todos los campos")
             }
         }

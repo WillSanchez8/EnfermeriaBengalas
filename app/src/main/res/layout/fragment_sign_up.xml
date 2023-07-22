@@ -63,12 +63,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tv_name_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/nombre"/>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_name_input"
                     android:layout_width="match_parent"
@@ -109,11 +103,6 @@
                         android:hint="@string/email"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/tv_password_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/contrasena"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_password_input"
@@ -130,12 +119,6 @@
                         android:hint="@string/contrasena"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/tv_repeat_password_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/repetir_contrasena"/>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_repeat_password_input"
                     android:layout_width="match_parent"
@@ -148,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="@string/contrasena"/>
+                        android:hint="@string/repetir_contrasena"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </ScrollView>
@@ -160,6 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="12dp"
+        android:textColor="@color/md_theme_light_primary"
         android:textSize="14sp"
         android:text="@string/ya_registrado"
         card_view:layout_constraintStart_toStartOf="parent"
@@ -182,7 +166,7 @@
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:text="@string/registrar"
         android:textSize="20sp"
         card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form"

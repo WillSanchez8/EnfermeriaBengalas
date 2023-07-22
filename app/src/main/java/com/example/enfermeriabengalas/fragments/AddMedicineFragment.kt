@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 
 class AddMedicineFragment : Fragment() {
 
@@ -71,6 +73,16 @@ class AddMedicineFragment : Fragment() {
                 binding.etMedicineQuantityInput.setText(medicine.quantity.toString())
                 val categoryIndex = resources.getStringArray(R.array.category_options).indexOf(medicine.category)
                 binding.spinnerMedicineCategory.setSelection(categoryIndex)
+                val imageUrl = medicine.image
+                if (imageUrl != null) {
+                    Picasso.get()
+                        .load(imageUrl)
+                        .into(binding.ivLogo)
+                } else {
+                    // Mostrar una imagen por defecto
+                    val defaultImage = ContextCompat.getDrawable(requireContext(), R.drawable.icon_medicine)
+                    binding.ivLogo.setImageDrawable(defaultImage)
+                }
             } else {
                 // El usuario está agregando un nuevo medicamento
                 // Cambia el título del fragmento a "Nuevo Medicamento"
@@ -80,25 +92,37 @@ class AddMedicineFragment : Fragment() {
             }
         }
 
+        // Habilita el contador de caracteres para los campos de nombre y descripción del medicamento
+        binding.tilMedicineNameInput.isCounterEnabled = true
+        binding.tilMedicineNameInput.counterMaxLength = 25
+        binding.tilMedicineDescriptionInput.isCounterEnabled = true
+        binding.tilMedicineDescriptionInput.counterMaxLength = 100
+
         // Agregar TextWatchers a los campos de texto
         binding.etMedicineNameInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null && s.contains("\n")) {
+                    val newText = s.toString().replace("\n", "")
+                    binding.etMedicineNameInput.setText(newText)
+                    binding.etMedicineNameInput.setSelection(newText.length)
+                }
             }
+
+            override fun afterTextChanged(s: Editable?) {}
         })
 
+        // Habilitar el desplazamiento vertical en el campo de texto
+        binding.etMedicineDescriptionInput.movementMethod = ScrollingMovementMethod()
+
+        // Agregar TextWatcher al campo de texto
         binding.etMedicineDescriptionInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable?) {
-
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
 
         binding.etMedicineQuantityInput.addTextChangedListener(object : TextWatcher {
@@ -107,7 +131,16 @@ class AddMedicineFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-
+                if (s.toString() == "0") {
+                    binding.tilMedicineQuantityInput.error = "La cantidad debe ser mayor a 0"
+                    binding.btnAddMedicine.isEnabled = false
+                } else if (s.toString().isNotEmpty() && s.toString().toInt() > 999) {
+                    binding.tilMedicineQuantityInput.error = "La cantidad debe ser menor a 1000"
+                    binding.btnAddMedicine.isEnabled = false
+                } else {
+                    binding.tilMedicineQuantityInput.error = null
+                    binding.btnAddMedicine.isEnabled = true
+                }
             }
         })
     }
@@ -152,11 +185,6 @@ class AddMedicineFragment : Fragment() {
     }
 
     private fun registerEvents() {
-        binding.backButton.setOnClickListener {
-            navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
-            // Establece la variable medicineToEdit a null
-            viewModel.medicineToEdit.value = null
-        }
 
         binding.btnChangeIcon.setOnClickListener {
             // Verifica si la aplicación tiene permiso para leer el almacenamiento externo
@@ -192,16 +220,18 @@ class AddMedicineFragment : Fragment() {
                     description = medicineDescription,
                     quantity = medicineQuantity,
                     category = medicineCategory,
-                    image = selectedImageUri?.toString()
+                    image = if (viewModel.medicineToEdit.value != null && selectedImageUri == null) viewModel.medicineToEdit.value?.image else selectedImageUri?.toString()
                 )
 
                 if (viewModel.medicineToEdit.value == null) {
                     // El usuario está agregando un nuevo medicamento
                     // Llama a la función addMedicine del ViewModel para agregar el medicamento a la base de datos
                     viewModel.addMedicine(medicine, onSuccess = {
+                        binding.progressBar2.visibility = View.GONE
                         navControl.navigate(R.id.action_addMedicineFragment_to_homeFragment)
                         Snackbar.make(binding.root, "Medicamento agregado con éxito", Snackbar.LENGTH_SHORT).show()
                     }, onFailure = { message ->
+                        binding.progressBar2.visibility = View.GONE
                         showErrorSnackbar(message)
                     })
                 } else {
@@ -210,15 +240,16 @@ class AddMedicineFragment : Fragment() {
                     // El usuario está editando un medicamento existente
                     // Carga la imagen del medicamento en la vista
                     viewModel.updateMedicine(viewModel.medicineToEdit.value!!, medicine, onSuccess = {
+                        binding.progressBar2.visibility = View.GONE
                         navControl.navigate(R.id.action_addMedicineFragment_to_medicineFragment)
                         Snackbar.make(binding.root, "Cambios guardados con éxito", Snackbar.LENGTH_SHORT).show()
                     }, onFailure = { message ->
+                        binding.progressBar2.visibility = View.GONE
                         showErrorSnackbar(message)
                     })
                     // Establece la variable medicineToEdit a null
                     viewModel.medicineToEdit.value = null
                 }
-                binding.progressBar2.visibility = View.GONE
             } else {
                 showErrorSnackbar("Por favor, complete todos los campos")
             }

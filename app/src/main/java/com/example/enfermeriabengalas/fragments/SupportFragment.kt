@@ -36,8 +36,6 @@ class SupportFragment : Fragment() {
     }
 
     private fun registerEvents() {
-        binding.backButton.setOnClickListener {
-            navControl.navigate(R.id.action_supportFragment_to_homeFragment)
-        }
+
     }
 }

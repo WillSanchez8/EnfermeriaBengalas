@@ -1,28 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SupportFragment">
-
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/back"
-        android:src="@drawable/icon_back" />
+    android:orientation="vertical"
+    android:background="@drawable/gradiente"
+    tools:context=".fragments.AddMedicineFragment">
 
     <TextView
-        android:id="@+id/category_title"
-        android:layout_width="match_parent"
+        android:id="@+id/support_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/museomoderno_medium"
         android:text="@string/support"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
         android:textStyle="bold|italic"
-        android:textAlignment="center" />
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

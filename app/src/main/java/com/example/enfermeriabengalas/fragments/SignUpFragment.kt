@@ -151,15 +151,39 @@ class SignUpFragment : Fragment() {
                 view?.let { contextView ->
                     auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            // El usuario se registró correctamente
+                            val user = auth.currentUser
+                            user?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
+                                if (emailTask.isSuccessful) {
+                                    // El correo electrónico de verificación se envió correctamente
+                                    // Mostrar un mensaje al usuario indicando que debe verificar su dirección de correo electrónico
+                                    Snackbar.make(contextView, "Se ha enviado un correo electrónico de verificación a tu dirección de correo. Por favor, verifica tu dirección para poder iniciar sesión.", Snackbar.LENGTH_LONG).show()
+                                    navControl.navigate(R.id.action_signUpFragment_to_signInFragment)
+                                } else {
+                                    // Ocurrió un error al enviar el correo electrónico de verificación
+                                    Snackbar.make(contextView, emailTask.exception?.message ?: "Ocurrió un error al enviar el correo electrónico de verificación", Snackbar.LENGTH_SHORT).show()
+                                }
+                                binding.progressBar2.visibility = View.GONE
+                            }
+
                             //Guardar el nombre y el cargo del usuario en la base de datos
                             val uid = auth.currentUser?.uid
                             if (uid != null) {
-                                databaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
-                                databaseRef.child("name").setValue(name)
-                                databaseRef.child("cargo").setValue(cargo)
+                                databaseRef =
+                                    FirebaseDatabase.getInstance().reference.child("users").child(uid)
+                                databaseRef.child("name").setValue(name).addOnCompleteListener { nameTask ->
+                                    if (!nameTask.isSuccessful) {
+                                        showErrorSnackbar("Error al guardar el nombre del usuario en la base de datos")
+                                    }
+                                    binding.progressBar2.visibility = View.GONE
+                                }
+                                databaseRef.child("cargo").setValue(cargo).addOnCompleteListener { cargoTask ->
+                                    if (!cargoTask.isSuccessful) {
+                                        showErrorSnackbar("Error al guardar el cargo del usuario en la base de datos")
+                                    }
+                                    binding.progressBar2.visibility = View.GONE
+                                }
                             }
-                            Snackbar.make(contextView, "Registro exitoso", Snackbar.LENGTH_SHORT).show()
-                            navControl.navigate(R.id.action_signUpFragment_to_homeFragment)
                         } else {
                             when (task.exception) {
                                 is FirebaseAuthUserCollisionException -> {
@@ -167,18 +191,22 @@ class SignUpFragment : Fragment() {
                                     showErrorSnackbar("Este correo ya está asociado, inicie sesión o inténtelo nuevamente")
                                 }
                                 else -> {
-                                    Snackbar.make(contextView, task.exception?.message ?: "Ocurrió un error", Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(
+                                        contextView,
+                                        task.exception?.message ?: "Ocurrió un error",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
+                            binding.progressBar2.visibility = View.GONE
                         }
-                        binding.progressBar2.visibility = View.GONE
                     }
                 } ?: run {
                     // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar
                     // Mostrar un mensaje en el registro de la aplicación
                     showErrorSnackbar("No se puede mostrar el Snackbar porque la vista es nula")
                 }
-            }else{
+            } else {
                 showErrorSnackbar("Por favor, complete todos los campos")
             }
         }
