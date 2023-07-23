@@ -75,6 +75,13 @@ class SearchFragment : Fragment() {
                     }
                     .show()
             }
+            override fun onPlusQuantityButtonClicked(medicine: Medicine) {
+                viewModel.increaseMedicineQuantity(medicine)
+            }
+
+            override fun onMinusQuantityButtonClicked(medicine: Medicine) {
+                viewModel.decreaseMedicineQuantity(medicine)
+            }
         }, viewModel)
         binding.medicinesRecyclerView.adapter = adapter
         binding.medicinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())

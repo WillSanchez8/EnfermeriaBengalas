@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradiente"
+    tools:context=".fragments.DeleteAcFragment">
+
+    <TextView
+        android:id="@+id/tv_signin_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/museomoderno_medium"
+        android:text="@string/delete_account"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        android:textStyle="bold|italic"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_logo"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="40dp"
+        card_view:cardCornerRadius="100dp"
+        card_view:cardElevation="4dp"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@id/tv_signin_title">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/bengala_sad"
+            android:src="@drawable/delete_ac" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_delete_ac"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/md_theme_light_onPrimary"
+        card_view:cardElevation="4dp"
+        card_view:layout_constraintTop_toBottomOf="@id/cv_logo"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:cardCornerRadius="20dp"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="70dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_secure"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="20sp"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eliminar_cuenta"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:padding="8dp" />
+
+            <LinearLayout
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/btn_si"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_delete"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="18sp"
+                    android:backgroundTint="@android:color/holo_red_dark"
+                    android:textColor="@android:color/white"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_cancel"
+        android:textSize="18sp"
+        android:layout_marginTop="60dp"
+        card_view:layout_constraintTop_toBottomOf="@id/cv_delete_ac"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

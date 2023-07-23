@@ -71,6 +71,9 @@
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_deleteAcFragment"
+            app:destination="@id/deleteAcFragment" />
     </fragment>
 
     <fragment
@@ -126,4 +129,24 @@
             android:id="@+id/action_searchFragment_to_addMedicineFragment"
             app:destination="@id/addMedicineFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/deleteAcFragment"
+        android:name="com.example.enfermeriabengalas.fragments.DeleteAcFragment"
+        android:label="fragment_delete_ac"
+        tools:layout="@layout/fragment_delete_ac" >
+        <action
+            android:id="@+id/action_deleteAcFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_deleteAcFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+<!--popUpTo especifica el destino hasta el cual se deben eliminar las pantallas del historial
+de navegación, y la propiedad popUpToInclusive indica si el destino especificado en popUpTo
+ también debe eliminarse.
+-->
 </navigation>

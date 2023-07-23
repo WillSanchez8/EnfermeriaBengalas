@@ -1,7 +1,11 @@
 package com.example.enfermeriabengalas.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableStringBuilder
@@ -30,6 +34,9 @@ class SignUpFragment : Fragment() {
     private lateinit var navControl: NavController
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var databaseRef: DatabaseReference
+    private lateinit var connectivityManager: ConnectivityManager
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +46,37 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Obtener una instancia de ConnectivityManager
+        connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        // Crear un NetworkCallback para escuchar cambios en la conectividad de red
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                // Mostrar un Snackbar con un mensaje y un emoji triste
+                showErrorSnackbar("Estás en modo offline 😔, intenta conectarte a internet")
+            }
+
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                // Mostrar un Snackbar con un mensaje y un emoji feliz
+                showSuccessSnackbar("Se ha restablecido la conexión 😊")
+            }
+        }
+
+        // Registrar el NetworkCallback para recibir notificaciones de cambios en la conectividad de red
+        val networkRequest = NetworkRequest.Builder().build()
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Anular el registro del NetworkCallback cuando el fragmento se destruye
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -90,6 +128,20 @@ class SignUpFragment : Fragment() {
     private fun init(view: View){
         navControl = Navigation.findNavController(view)
         auth = FirebaseAuth.getInstance()
+    }
+
+    private fun showSuccessSnackbar(message: String) {
+        val contextView = view
+        if (contextView != null) {
+            val snackbarText = SpannableStringBuilder(message)
+            snackbarText.setSpan(ForegroundColorSpan(Color.WHITE), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            snackbarText.setSpan(StyleSpan(Typeface.BOLD), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            // Crear un color verde más suave
+            val backgroundColor = Color.rgb(0, 200, 0)
+
+            Snackbar.make(contextView, snackbarText, Snackbar.LENGTH_SHORT).setBackgroundTint(backgroundColor).show()
+        }
     }
 
     private fun showErrorSnackbar(message: String) {

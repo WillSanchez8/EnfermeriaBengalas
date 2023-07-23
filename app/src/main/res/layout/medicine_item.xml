@@ -1,5 +1,6 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -13,7 +14,6 @@
         android:orientation="horizontal">
 
         <ImageView
-
             android:id="@+id/medicine_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -25,30 +25,35 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/medicine_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/medicine_name" />
 
             <TextView
                 android:id="@+id/medicine_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/medicine_description" />
 
             <TextView
                 android:id="@+id/medicine_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/medicine_category" />
 
             <TextView
                 android:id="@+id/medicine_availability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnSurface"
                 android:text="@string/medicine_quantity" />
         </LinearLayout>
 
@@ -63,7 +68,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <ImageButton
@@ -86,6 +90,32 @@
                     android:contentDescription="@string/edit"
                     android:src="@drawable/icon_edit" />
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/plus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/plus_btn"
+                    android:src="@drawable/icon_plus" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/minus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/minus_btn"
+                    android:src="@drawable/icon_minus" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
