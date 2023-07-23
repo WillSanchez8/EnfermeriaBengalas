@@ -152,6 +152,38 @@ class MedicineViewModel : ViewModel() {
         }
     }
 
+    fun increaseMedicineQuantity(medicine: Medicine) {
+        // Crear una copia del objeto medicine para evitar modificar el objeto original
+        val newMedicine = medicine.copy()
+        // Aumentar la cantidad del medicamento en 1 si es menor a 999
+        if (newMedicine.quantity < 999) {
+            newMedicine.quantity += 1
+        }
+        // Actualizar el medicamento en la base de datos
+        updateMedicine(medicine, newMedicine, onSuccess = {
+            // La actualización fue exitosa
+        }, onFailure = { errorMessage ->
+            // Hubo un error al actualizar el medicamento
+            this.errorMessage.value = errorMessage
+        })
+    }
+
+    fun decreaseMedicineQuantity(medicine: Medicine) {
+        // Crear una copia del objeto medicine para evitar modificar el objeto original
+        val newMedicine = medicine.copy()
+        // Disminuir la cantidad del medicamento en 1 si es mayor a 0
+        if (newMedicine.quantity > 0) {
+            newMedicine.quantity -= 1
+        }
+        // Actualizar el medicamento en la base de datos
+        updateMedicine(medicine, newMedicine, onSuccess = {
+            // La actualización fue exitosa
+        }, onFailure = { errorMessage ->
+            // Hubo un error al actualizar el medicamento
+            this.errorMessage.value = errorMessage
+        })
+    }
+
     fun updateMedicine(medicine: Medicine, newMedicine: Medicine, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         // Obtener la referencia al nodo de medicamentos en la base de datos
         val medicinesRef = databaseRef.child("medicines")

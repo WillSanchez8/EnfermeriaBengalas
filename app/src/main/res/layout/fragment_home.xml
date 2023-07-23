@@ -211,7 +211,19 @@
             android:contentDescription="@string/btn_help"
             android:layout_marginBottom="20dp"
             />
+
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_delete_ac"
+        android:src="@drawable/icon_delete_ac"
+        style="@style/ButtonStyle"
+        android:background="@drawable/rounded_white_background"
+        android:contentDescription="@string/btn_help"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_gravity="bottom|start"
+        />
 
     <Button
         android:id="@+id/logout_button"
@@ -221,4 +233,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="670dp"
         />
+
+    <TextView
+        android:id="@+id/tv_logging_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Saliendo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="720dp"
+        android:visibility="gone" />
+
 </FrameLayout>

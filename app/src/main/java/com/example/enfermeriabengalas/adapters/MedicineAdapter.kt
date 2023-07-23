@@ -1,6 +1,7 @@
 package com.example.enfermeriabengalas.adapters
 
 import android.content.res.Resources
+import android.graphics.Color
 import android.text.TextUtils
 import com.example.enfermeriabengalas.databinding.MedicineItemBinding
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso
 interface MedicineAdapterListener {
     fun onEditButtonClicked(medicine: Medicine)
     fun onDeleteButtonClicked(medicine: Medicine)
+    fun onPlusQuantityButtonClicked(medicine: Medicine)
+    fun onMinusQuantityButtonClicked(medicine: Medicine)
 }
 
 class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapterListener, val viewModel: MedicineViewModel) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
@@ -29,6 +32,11 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val medicine = medicines[position]
+        when {
+            medicine.quantity >= 5 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#98FB98")) // Verde pistache
+            medicine.quantity in 1..4 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#F0E68C")) // Amarillo paja suave
+            medicine.quantity == 0 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#FFB6C1")) // Rojo suave
+        }
         holder.medicineNameTextView.text = medicine.name
         holder.medicineDescriptionTextView.text = medicine.description
         holder.medicineQuantityTextView.text = medicine.quantity.toString()
@@ -69,12 +77,19 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
             .translationX(0f) // Animar a su posición final
             .setDuration(300) // Establecer la duración de la animación
             .start() // Iniciar la animación
+
         holder.viewBinding.editButton.setOnClickListener {
             viewModel.medicineToEdit.value = medicine
             listener.onEditButtonClicked(medicine)
         }
         holder.viewBinding.deleteButton.setOnClickListener {
             listener.onDeleteButtonClicked(medicine)
+        }
+        holder.viewBinding.plusButton.setOnClickListener {
+            listener.onPlusQuantityButtonClicked(medicine)
+        }
+        holder.viewBinding.minusButton.setOnClickListener {
+            listener.onMinusQuantityButtonClicked(medicine)
         }
     }
 
