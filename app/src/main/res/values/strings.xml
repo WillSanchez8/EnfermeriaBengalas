@@ -71,14 +71,15 @@
     <string name="ux_ui_designer">Diseñadora UX/UI</string>
     <string name="EPOANA">EPOANA</string>
     <string name="Icons8">Icons8</string>
-    <string name="contact">Contactanos</string>
+    <string name="contact">¡Contactanos!</string>
     <string name="Whatsapp">Whatsapp</string>
     <string name="Facebook">Facebook</string>
     <string name="Github">Github</string>
-    <string name="app">¿Quieres una app para crecer tu negocio?</string>
+    <string name="app">Desarrollada por alumnos de ISC TESCHA, ¿Quieres una app móvil o sistema para tu negocio?</string>
     <string name="instrucciones">Pulsa los iconos para interactuar</string>
     <string name="Nom1">William</string>
     <string name="Nom2">Ariana</string>
     <string name="Will_description">Backend and Frontend developer</string>
     <string name="Ari_description">UX/UI Designer</string>
+    <string name="TESCHA">TESCHA</string>
 </resources>

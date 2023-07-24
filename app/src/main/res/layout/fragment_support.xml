@@ -32,7 +32,7 @@
         card_view:cardElevation="4dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         card_view:layout_constraintTop_toBottomOf="@id/support_title"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent">
@@ -81,7 +81,15 @@
 
                     <ImageButton
                         android:id="@+id/btn_prepa"
-                        android:src="@drawable/logo_escuela_sin_fondo__2_"
+                        android:src="@drawable/logo_escuela_sin_fondo"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:contentDescription="@string/escuela"
+                        android:layout_height="wrap_content" />
+                    <ImageButton
+                        android:id="@+id/btn_tescha"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/icon_logotescha"
                         android:background="@android:color/transparent"
                         android:layout_width="wrap_content"
                         android:contentDescription="@string/escuela"
@@ -109,7 +117,15 @@
                         android:fontFamily="@font/museomoderno_medium"
                         android:textSize="20sp"
                         android:text="@string/EPOANA"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/text_view_2_3"
+                        android:fontFamily="@font/museomoderno_medium"
+                        android:textSize="20sp"
+                        android:text="@string/TESCHA"
+                        android:layout_marginTop="40dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -126,7 +142,7 @@
         card_view:cardElevation="4dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         card_view:layout_constraintTop_toBottomOf="@id/colaboration"
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent">

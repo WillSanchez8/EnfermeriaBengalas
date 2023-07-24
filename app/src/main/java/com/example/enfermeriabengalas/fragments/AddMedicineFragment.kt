@@ -153,6 +153,11 @@ class AddMedicineFragment : Fragment() {
         viewModel.init(databaseRef)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.medicineToEdit.value = null
+    }
+
     private fun showErrorSnackbar(message: String) {
         val contextView = view
         if (contextView != null) {

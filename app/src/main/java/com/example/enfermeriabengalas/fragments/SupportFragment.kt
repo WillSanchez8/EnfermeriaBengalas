@@ -55,5 +55,6 @@ class SupportFragment : Fragment() {
         setButtonClickListener(binding.btnFace2, "https://www.facebook.com/anel.ariana.1")
         setButtonClickListener(binding.btnWhats2, "https://api.whatsapp.com/send?phone=525581769032")
         setButtonClickListener(binding.btnGithub2, "https://github.com/AnelAriana")
+        setButtonClickListener(binding.btnTescha, "https://tescha.edomex.gob.mx/")
     }
 }
