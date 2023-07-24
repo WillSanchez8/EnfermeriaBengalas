@@ -130,6 +130,15 @@ class DeleteAcFragment : Fragment() {
                     showErrorSnackbar("Ha sucedido un error al intentar eliminar tu cuenta, prueba de nuevo")
                 }
             }
+            // Eliminar el token de registro de FCM del usuario de la base de datos
+            val tokenRef = FirebaseDatabase.getInstance().reference.child("tokens").child(uid)
+            tokenRef.removeValue().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    view?.let { Snackbar.make(it, "Tu dispositivo se ha eliminado de la base de datos", Snackbar.LENGTH_SHORT).show() }
+                } else {
+                    showErrorSnackbar("Ha sucedido un error al intentar eliminar tu dispositivo, prueba de nuevo")
+                }
+            }
         }
     }
 

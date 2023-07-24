@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="cargo_options">
-        <item>secretarios/as</item>
-        <item>directivos</item>
-        <item>orientadores</item>
+        <item>Secretarios/as</item>
+        <item>Directivos</item>
+        <item>Orientadores</item>
+        <item>Profesores/as</item>
+        <item>Alumnos/as</item>
+        <item>Intendencia</item>
     </string-array>
 </resources>

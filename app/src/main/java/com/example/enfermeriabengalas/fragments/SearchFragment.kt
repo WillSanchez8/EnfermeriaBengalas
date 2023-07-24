@@ -1,6 +1,12 @@
 package com.example.enfermeriabengalas.fragments
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +25,11 @@ import com.example.enfermeriabengalas.models.Medicine
 import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class SearchFragment : Fragment() {
 
@@ -83,6 +93,22 @@ class SearchFragment : Fragment() {
                 viewModel.decreaseMedicineQuantity(medicine)
             }
         }, viewModel)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (uid != null) {
+            val userRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+            userRef.child("cargo").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val cargo = dataSnapshot.getValue(String::class.java)
+                    if (cargo != null) {
+                        viewModel.updateButtonState(cargo)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    showErrorSnackbar("Error al obtener el cargo del usuario")
+                }
+            })
+        }
         binding.medicinesRecyclerView.adapter = adapter
         binding.medicinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -98,6 +124,16 @@ class SearchFragment : Fragment() {
         navControl = Navigation.findNavController(view)
     }
 
+    private fun showErrorSnackbar(message: String) {
+        val contextView = view
+        if (contextView != null) {
+            val snackbarText = SpannableStringBuilder(message)
+            snackbarText.setSpan(ForegroundColorSpan(Color.WHITE), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            snackbarText.setSpan(StyleSpan(Typeface.BOLD), 0, snackbarText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            Snackbar.make(contextView, snackbarText, Snackbar.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
+        }
+    }
     private fun registerEvents() {
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

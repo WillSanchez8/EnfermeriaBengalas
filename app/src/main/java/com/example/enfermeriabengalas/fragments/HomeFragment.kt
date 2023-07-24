@@ -3,7 +3,8 @@ package com.example.enfermeriabengalas.fragments
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.BroadcastReceiver
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,9 +12,9 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -58,6 +59,7 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: MedicineViewModel
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    val AVAILABILITY_CHANNEL_ID = "availability_channel"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +72,20 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Crear un canal de notificación
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.availability_channel_name)
+            val descriptionText = getString(R.string.availability_channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(AVAILABILITY_CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            // Registrar el canal de notificación en el sistema
+            val notificationManager: NotificationManager =
+                requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
         // Obtener una instancia de ConnectivityManager
         connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -104,8 +120,28 @@ class HomeFragment : Fragment() {
         init(view)
         registerEvents()
         showGreeting()
-    }
 
+        viewModel.buttonState.observe(viewLifecycleOwner) { state ->
+            binding.pillButton.isEnabled = state.isPillButtonEnabled
+            binding.phoneButton.isEnabled = state.isPhoneButtonEnabled
+        }
+
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            val userRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+            userRef.child("cargo").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val cargo = dataSnapshot.getValue(String::class.java)
+                    if (cargo != null) {
+                        viewModel.updateButtonState(cargo)
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    showErrorSnackbar("Error al obtener el cargo del usuario")
+                }
+            })
+        }
+    }
 
     private fun init(view: View) {
         navControl = Navigation.findNavController(view)
@@ -192,7 +228,11 @@ class HomeFragment : Fragment() {
 
 
         binding.pillButton.setOnClickListener {
-            navControl.navigate(R.id.action_homeFragment_to_addMedicineFragment)
+            if (binding.pillButton.isEnabled) {
+                navControl.navigate(R.id.action_homeFragment_to_addMedicineFragment)
+            } else {
+                Snackbar.make(binding.root, "No tienes permitida esta acción", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnHelp.setOnClickListener {
