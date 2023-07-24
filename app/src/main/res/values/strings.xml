@@ -82,4 +82,6 @@
     <string name="Will_description">Backend and Frontend developer</string>
     <string name="Ari_description">UX/UI Designer</string>
     <string name="TESCHA">TESCHA</string>
+    <string name="icon_moon">Icono de luna</string>
+    <string name="icon_sun">Icono de sol</string>
 </resources>

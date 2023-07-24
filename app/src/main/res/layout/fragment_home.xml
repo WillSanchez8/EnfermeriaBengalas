@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
@@ -24,6 +25,14 @@
         android:contentDescription="@string/btn_search"
         android:layout_margin="10dp"
         android:layout_gravity="top|end"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_day_night"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.App.MaterialSwitch"
+        app:thumbIcon="@drawable/sun_icon"/>
 
     <LinearLayout
         android:layout_width="match_parent"

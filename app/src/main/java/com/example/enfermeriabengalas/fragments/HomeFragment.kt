@@ -32,6 +32,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -200,6 +201,18 @@ class HomeFragment : Fragment() {
             addUpdateListener { animation ->
                 val dotCount = animation.animatedValue as Int
                 binding.tvLoggingOut.text = getString(R.string.Saliendo, ".".repeat(dotCount))
+            }
+        }
+
+        binding.switchDayNight.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.switchDayNight.thumbIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.moon_icon)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                Snackbar.make(binding.root, "Modo oscuro activado", Snackbar.LENGTH_SHORT).show()
+            } else {
+                binding.switchDayNight.thumbIconDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.sun_icon)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                Snackbar.make(binding.root, "Modo oscuro desactivado", Snackbar.LENGTH_SHORT).show()
             }
         }
 

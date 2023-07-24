@@ -29,4 +29,9 @@
         <item name="android:queryHint">@string/search_hint</item>
     </style>
 
+    <style name="Widget.App.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/md_theme_light_secondary</item>
+        <item name="trackTint">@color/md_theme_dark_secondary</item>
+    </style>
+
 </resources>
