@@ -65,5 +65,20 @@
     <string name="channel_description">NOTIFICACIONES DE BORRADO DE CUENTA</string>
     <string name="availability_channel_name">DISPONIBILIDAD</string>
     <string name="availability_channel_description">NOTIFICACIONES DE DISPONIBILIDAD</string>
-
+    <string name="icons8">Icono de Icons8</string>
+    <string name="escuela">Logo de la escuela</string>
+    <string name="back_develop">Desarrollador Back</string>
+    <string name="ux_ui_designer">Diseñadora UX/UI</string>
+    <string name="EPOANA">EPOANA</string>
+    <string name="Icons8">Icons8</string>
+    <string name="contact">Contactanos</string>
+    <string name="Whatsapp">Whatsapp</string>
+    <string name="Facebook">Facebook</string>
+    <string name="Github">Github</string>
+    <string name="app">¿Quieres una app para crecer tu negocio?</string>
+    <string name="instrucciones">Pulsa los iconos para interactuar</string>
+    <string name="Nom1">William</string>
+    <string name="Nom2">Ariana</string>
+    <string name="Will_description">Backend and Frontend developer</string>
+    <string name="Ari_description">UX/UI Designer</string>
 </resources>

@@ -24,20 +24,270 @@
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/message_textview"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/colaboration"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/message"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:fontFamily="@font/museomoderno_medium"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="4dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        card_view:layout_constraintTop_toBottomOf="@id/support_title"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/support_title" />
+        card_view:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <TextView
+                android:id="@+id/presentation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="20sp"
+                android:text="@string/message"/>
+
+            <TextView
+                android:id="@+id/instrucciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="15sp"
+                android:text="@string/instrucciones"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btn_icons8"
+                        android:src="@drawable/icon_icons8"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:contentDescription="@string/icons8"
+                        android:layout_height="wrap_content" />
+
+                    <ImageButton
+                        android:id="@+id/btn_prepa"
+                        android:src="@drawable/logo_escuela_sin_fondo__2_"
+                        android:background="@android:color/transparent"
+                        android:layout_width="wrap_content"
+                        android:contentDescription="@string/escuela"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_view_1_2"
+                        android:fontFamily="@font/museomoderno_medium"
+                        android:layout_marginTop="30dp"
+                        android:textSize="20sp"
+                        android:text="@string/Icons8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/text_view_2_2"
+                        android:fontFamily="@font/museomoderno_medium"
+                        android:textSize="20sp"
+                        android:text="@string/EPOANA"
+                        android:layout_marginTop="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/contact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="4dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        card_view:layout_constraintTop_toBottomOf="@id/colaboration"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:id="@+id/app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="17sp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/app"/>
+            <TextView
+                android:id="@+id/contact_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/contact"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/back_develop"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="15dp"
+                        card_view:cardCornerRadius="100dp"
+                        card_view:cardElevation="4dp">
+                        <ImageView
+                            android:id="@+id/iv_logo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/back_develop"
+                            android:contentDescription="@string/back_develop" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/ux_ui_designer"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        card_view:cardCornerRadius="100dp"
+                        card_view:cardElevation="4dp">
+                        <ImageView
+                            android:id="@+id/ux_ui_designer_logo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/front_develop"
+                            android:contentDescription="@string/ux_ui_designer" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/Will"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="20sp"
+                android:text="@string/Nom1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/Will_description"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="15sp"
+                android:text="@string/Will_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/btn_Face1"
+                    android:src="@drawable/icon_face"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/Facebook"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/btn_Whats1"
+                    android:src="@drawable/icon_whats"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/Whatsapp"
+                    android:layout_height="wrap_content" />
+                <ImageButton
+                    android:id="@+id/btn_Github1"
+                    android:src="@drawable/icon_github"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/Github"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/Ari"
+
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="20sp"
+                android:text="@string/Nom2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/Ari_description"
+                android:fontFamily="@font/museomoderno_medium"
+                android:textSize="15sp"
+                android:text="@string/Ari_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageButton
+                            android:id="@+id/btn_Face2"
+                            android:src="@drawable/icon_face"
+                            android:background="@android:color/transparent"
+                            android:layout_width="wrap_content"
+                            android:contentDescription="@string/Facebook"
+                            android:layout_height="wrap_content" />
+                        <ImageButton
+                            android:id="@+id/btn_Whats2"
+                            android:src="@drawable/icon_whats"
+                            android:background="@android:color/transparent"
+                            android:layout_width="wrap_content"
+                            android:contentDescription="@string/Whatsapp"
+                            android:layout_height="wrap_content" />
+                        <ImageButton
+                            android:id="@+id/btn_Github2"
+                            android:src="@drawable/icon_github"
+                            android:background="@android:color/transparent"
+                            android:layout_width="wrap_content"
+                            android:contentDescription="@string/Github"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

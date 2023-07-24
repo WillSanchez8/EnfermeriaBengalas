@@ -37,9 +37,16 @@ class MedicineViewModel : ViewModel() {
     val AVAILABILITY_CHANNEL_ID = "availability_channel"
     val AVAILABILITY_NOTIFICATION_ID = 2
     var lastCheckedDate: Calendar? = null
+    val buttonState = MutableLiveData<ButtonState>()
 
     fun init(databaseRef: DatabaseReference) {
         this.databaseRef = databaseRef
+    }
+
+    fun updateButtonState(cargo: String) {
+        val disabledCargos = listOf("Alumnos/as", "Intendencia", "Profesores/as")
+        val isEnabled = !disabledCargos.contains(cargo)
+        buttonState.value = ButtonState(isEnabled, isEnabled, isEnabled, isEnabled, isEnabled, isEnabled)
     }
 
     fun getMedicines(categoryTitle: String) {
@@ -367,3 +374,12 @@ class MedicineViewModel : ViewModel() {
         }
     }
 }
+
+data class ButtonState(
+    val isPillButtonEnabled: Boolean,
+    val isPhoneButtonEnabled: Boolean,
+    val isEditMedicineEnabled: Boolean,
+    val isDeleteMedicineEnabled: Boolean,
+    val isPlusQuantityButtonEnabled: Boolean,
+    val isMinusQuantityButtonEnabled: Boolean
+)

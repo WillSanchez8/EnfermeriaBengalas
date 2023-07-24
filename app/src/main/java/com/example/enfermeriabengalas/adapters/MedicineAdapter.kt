@@ -5,12 +5,12 @@ import android.graphics.Color
 import android.text.TextUtils
 import com.example.enfermeriabengalas.databinding.MedicineItemBinding
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.models.Medicine
+import com.example.enfermeriabengalas.viewmodel.ButtonState
 import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
@@ -23,8 +23,20 @@ interface MedicineAdapterListener {
     fun onMinusQuantityButtonClicked(medicine: Medicine)
 }
 
-class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapterListener, val viewModel: MedicineViewModel) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
+class MedicineAdapter(
+    var medicines: List<Medicine>,
+    val listener: MedicineAdapterListener,
+    val viewModel: MedicineViewModel
+) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
 
+    var buttonState: ButtonState? = null
+
+    init {
+        viewModel.buttonState.observeForever { state ->
+            buttonState = state
+            notifyDataSetChanged()
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewBinding = MedicineItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(viewBinding)
@@ -37,6 +49,8 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
             medicine.quantity in 1..4 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#F0E68C")) // Amarillo paja suave
             medicine.quantity == 0 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#FFB6C1")) // Rojo suave
         }
+
+
         holder.medicineNameTextView.text = medicine.name
         holder.medicineDescriptionTextView.text = medicine.description
         holder.medicineQuantityTextView.text = medicine.quantity.toString()
@@ -78,6 +92,15 @@ class MedicineAdapter(var medicines: List<Medicine>, val listener: MedicineAdapt
             .setDuration(300) // Establecer la duración de la animación
             .start() // Iniciar la animación
 
+        val state = buttonState
+        if (state != null) {
+            holder.viewBinding.editButton.isEnabled = state.isEditMedicineEnabled
+            holder.viewBinding.deleteButton.isEnabled = state.isDeleteMedicineEnabled
+            holder.viewBinding.plusButton.isEnabled = state.isPlusQuantityButtonEnabled
+            holder.viewBinding.minusButton.isEnabled = state.isMinusQuantityButtonEnabled
+        }
+
+        // Establecer los listeners para los botones
         holder.viewBinding.editButton.setOnClickListener {
             viewModel.medicineToEdit.value = medicine
             listener.onEditButtonClicked(medicine)

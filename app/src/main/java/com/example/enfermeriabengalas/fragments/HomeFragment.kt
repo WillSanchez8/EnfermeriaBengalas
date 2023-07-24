@@ -120,6 +120,27 @@ class HomeFragment : Fragment() {
         init(view)
         registerEvents()
         showGreeting()
+
+        viewModel.buttonState.observe(viewLifecycleOwner) { state ->
+            binding.pillButton.isEnabled = state.isPillButtonEnabled
+            binding.phoneButton.isEnabled = state.isPhoneButtonEnabled
+        }
+
+        val uid = auth.currentUser?.uid
+        if (uid != null) {
+            val userRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+            userRef.child("cargo").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val cargo = dataSnapshot.getValue(String::class.java)
+                    if (cargo != null) {
+                        viewModel.updateButtonState(cargo)
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    showErrorSnackbar("Error al obtener el cargo del usuario")
+                }
+            })
+        }
     }
 
     private fun init(view: View) {
@@ -207,7 +228,11 @@ class HomeFragment : Fragment() {
 
 
         binding.pillButton.setOnClickListener {
-            navControl.navigate(R.id.action_homeFragment_to_addMedicineFragment)
+            if (binding.pillButton.isEnabled) {
+                navControl.navigate(R.id.action_homeFragment_to_addMedicineFragment)
+            } else {
+                Snackbar.make(binding.root, "No tienes permitida esta acción", Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnHelp.setOnClickListener {
