@@ -245,7 +245,6 @@ class SignInFragment : Fragment() {
                                 }
                             }
                             binding.progressBar2.visibility = View.GONE
-
                         }
                     } ?: run {
                         // La vista es nula, el fragmento ya no está asociado a una actividad, no se puede mostrar un Snackbar

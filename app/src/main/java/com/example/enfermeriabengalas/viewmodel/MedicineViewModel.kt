@@ -1,6 +1,13 @@
 package com.example.enfermeriabengalas.viewmodel
 
+import android.Manifest
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.enfermeriabengalas.models.Medicine
@@ -8,10 +15,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import com.example.enfermeriabengalas.adapters.MyBroadcastReceiver
+import com.example.enfermeriabengalas.R
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import java.util.Calendar
 import java.util.UUID
 
 class MedicineViewModel : ViewModel() {
@@ -21,6 +34,9 @@ class MedicineViewModel : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
     val medicineToEdit = MutableLiveData<Medicine?>()
     val searchResults = MutableLiveData<List<Medicine>>()
+    val AVAILABILITY_CHANNEL_ID = "availability_channel"
+    val AVAILABILITY_NOTIFICATION_ID = 2
+    var lastCheckedDate: Calendar? = null
 
     fun init(databaseRef: DatabaseReference) {
         this.databaseRef = databaseRef
@@ -73,7 +89,7 @@ class MedicineViewModel : ViewModel() {
     }
 
     fun deleteMedicine(medicine: Medicine) {
-// Eliminar el medicamento de la base de datos
+        // Eliminar el medicamento de la base de datos
         val medicinesRef = databaseRef.child("medicines")
         val medicineQuery = medicinesRef.orderByChild("name").equalTo(medicine.name)
         medicineQuery.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -251,5 +267,103 @@ class MedicineViewModel : ViewModel() {
                 onFailure("Error al intentar obtener los datos del medicamento")
             }
         })
+    }
+
+    fun checkMedicineAvailability(context: Context) {
+        val currentDate = Calendar.getInstance()
+        if (lastCheckedDate == null || currentDate.after(lastCheckedDate)) {
+            val databaseRef = FirebaseDatabase.getInstance().reference.child("medicines")
+            databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var lowAvailabilityCount = 0
+                    var zeroAvailabilityCount = 0
+                    var highAvailabilityCount = 0
+                    for (medicineSnapshot in snapshot.children) {
+                        val medicine = medicineSnapshot.getValue(Medicine::class.java)
+                        if (medicine != null && medicine.quantity < 5) {
+                            lowAvailabilityCount++
+                        }
+                        if (medicine != null && medicine.quantity == 0) {
+                            zeroAvailabilityCount++
+                        }
+                        if (medicine != null && medicine.quantity >= 5) {
+                            highAvailabilityCount++
+                        }
+                    }
+                    if (lowAvailabilityCount >= 5) {
+                        // Hay muchos medicamentos con poca disponibilidad
+                        // Notificar al usuario
+                        sendLowAvailabilityNotification(context)
+                    } else if (highAvailabilityCount >= 5) {
+                        // Hay suficientes medicamentos disponibles
+                        // Notificar al usuario
+                        sendHighAvailabilityNotification(context)
+                    }
+                    if (zeroAvailabilityCount >= 5) {
+                        // Hay muchos medicamentos con cantidad igual a 0
+                        // Programar una alarma para llamar a esta función cada 24 horas
+                        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        val intent = Intent(context, MyBroadcastReceiver::class.java)
+                        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+                        } else {
+                            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                        }
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + AlarmManager.INTERVAL_DAY, pendingIntent)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    errorMessage.value = "Ocurrió un error al intentar obtener los datos de medicamentos. Por favor, inténtalo de nuevo más tarde."
+                }
+            })
+            lastCheckedDate = currentDate
+        }
+    }
+
+    private fun sendLowAvailabilityNotification(context: Context) {
+        // Obtener el nombre del paquete de la aplicación
+        val packageName = context.packageName
+        // Crear una notificación para mostrar al usuario
+        val builder = NotificationCompat.Builder(context, AVAILABILITY_CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon_tiger_sad)
+            .setContentTitle("Poca disponibilidad de medicamentos")
+            .setContentText("Hay muchos medicamentos con poca disponibilidad 😔. Por favor, revisa la disponibilidad de los productos para evitar que se agoten.")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(Uri.parse("android.resource://$packageName/raw/sound_tiger")) // Reproducir un sonido personalizado
+
+        // Verificar si el usuario ha otorgado el permiso para hacer vibrar el dispositivo
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
+            // El usuario ha otorgado el permiso
+            // Hacer vibrar el dispositivo
+            builder.setVibrate(longArrayOf(0, 1000, 500, 1000))
+        }
+        // Mostrar la notificación
+        with(NotificationManagerCompat.from(context)) {
+            notify(AVAILABILITY_NOTIFICATION_ID, builder.build())
+        }
+    }
+
+    private fun sendHighAvailabilityNotification(context: Context) {
+        // Obtener el nombre del paquete de la aplicación
+        val packageName = context.packageName
+        // Crear una notificación para mostrar al usuario
+        val builder = NotificationCompat.Builder(context, AVAILABILITY_CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon_tiger)
+            .setContentTitle("Suficientes medicamentos disponibles")
+            .setContentText("Aún cuentas con una gran variedad de medicamentos disponibles 😊.")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(Uri.parse("android.resource://$packageName/raw/sound_tiger")) // Reproducir un sonido personalizado
+
+        // Verificar si el usuario ha otorgado el permiso para hacer vibrar el dispositivo
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
+            // El usuario ha otorgado el permiso
+            // Hacer vibrar el dispositivo
+            builder.setVibrate(longArrayOf(0, 1000, 500, 1000))
+        }
+        // Mostrar la notificación
+        with(NotificationManagerCompat.from(context)) {
+            notify(AVAILABILITY_NOTIFICATION_ID, builder.build())
+        }
     }
 }

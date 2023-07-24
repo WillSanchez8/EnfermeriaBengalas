@@ -1,12 +1,20 @@
 package com.example.enfermeriabengalas.fragments
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -17,6 +25,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.enfermeriabengalas.R
@@ -36,6 +47,9 @@ class SignUpFragment : Fragment() {
     private lateinit var databaseRef: DatabaseReference
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    // Definir un CHANNEL_ID para el canal de notificación
+    val CHANNEL_ID = "account_deleted_channel"
+    val NOTIFICATION_ID = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +62,21 @@ class SignUpFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Crear un canal de notificación
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            // Registrar el canal de notificación en el sistema
+            val notificationManager: NotificationManager =
+                requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
 
         // Obtener una instancia de ConnectivityManager
         connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -164,6 +193,74 @@ class SignUpFragment : Fragment() {
             true
         }
     }
+
+    fun scheduleAccountDeletion() {
+        // Crear un Handler y un Runnable para ejecutar una función después de 24 horas
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = Runnable {
+            // Verificar si el usuario ha verificado su dirección de correo electrónico
+            val user = auth.currentUser
+            user?.reload()?.addOnCompleteListener { reloadTask ->
+                if (reloadTask.isSuccessful) {
+                    if (!user.isEmailVerified) {
+                        // El usuario no ha verificado su dirección de correo electrónico
+                        // Borrar la cuenta del usuario y sus datos asociados
+                        val uid = user.uid
+                        val databaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
+                        databaseRef.removeValue().addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // Los datos del usuario se eliminaron correctamente
+                                user.delete().addOnCompleteListener { deleteTask ->
+                                    if (deleteTask.isSuccessful) {
+                                        // La cuenta del usuario se eliminó correctamente
+                                        // Enviar una notificación al usuario utilizando Firebase Cloud Messaging
+                                        sendAccountDeletedNotification()
+                                    } else {
+                                        showErrorSnackbar("Error al eliminar la cuenta del usuario")
+                                    }
+                                }
+                            } else {
+                                showErrorSnackbar("Error al eliminar los datos del usuario")
+                            }
+                        }
+                    }
+                } else {
+                    showErrorSnackbar("Error al verificar el estado de la cuenta del usuario")
+                }
+            }
+        }
+        // Programar la ejecución del Runnable después de 24 horas (en milisegundos)
+        handler.postDelayed(runnable, 24 * 60 * 60 * 1000)
+    }
+
+    fun sendAccountDeletedNotification() {
+        // Obtener una referencia al contexto de la actividad
+        val context = requireContext()
+
+        // Obtener el nombre del paquete de la aplicación
+        val packageName = context.packageName
+
+        // Crear una notificación para mostrar al usuario
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.icon_tiger_sad)
+            .setContentTitle("Cuenta eliminada")
+            .setContentText("Lo sentimos 😔, tu cuenta ha sido eliminada porque no verificaste tu correo electrónico a tiempo. Por favor, inténtalo de nuevo.")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSound(Uri.parse("android.resource://$packageName/raw/sound_tiger")) // Reproducir un sonido personalizado
+
+        // Verificar si el usuario ha otorgado el permiso para hacer vibrar el dispositivo
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED) {
+            // El usuario ha otorgado el permiso
+            // Hacer vibrar el dispositivo
+            builder.setVibrate(longArrayOf(0, 1000, 500, 1000))
+        }
+
+        // Mostrar la notificación
+        with(NotificationManagerCompat.from(context)) {
+            notify(NOTIFICATION_ID, builder.build())
+        }
+    }
+
     private fun registerEvents() {
         binding.authTextView.setOnClickListener {
             navControl.navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -210,6 +307,9 @@ class SignUpFragment : Fragment() {
                                     // El correo electrónico de verificación se envió correctamente
                                     // Mostrar un mensaje al usuario indicando que debe verificar su dirección de correo electrónico
                                     Snackbar.make(contextView, "Se ha enviado un correo electrónico de verificación a tu dirección de correo. Por favor, verifica tu dirección para poder iniciar sesión.", Snackbar.LENGTH_LONG).show()
+                                    Snackbar.make(contextView, "Si no verificas tu correo electrónico en las próximas 24 horas, tu cuenta será borrada.", Snackbar.LENGTH_LONG).show()
+                                    // Llamar a la función scheduleAccountDeletion
+                                    scheduleAccountDeletion()
                                     navControl.navigate(R.id.action_signUpFragment_to_signInFragment)
                                 } else {
                                     // Ocurrió un error al enviar el correo electrónico de verificación
@@ -263,4 +363,5 @@ class SignUpFragment : Fragment() {
             }
         }
     }
+
 }
