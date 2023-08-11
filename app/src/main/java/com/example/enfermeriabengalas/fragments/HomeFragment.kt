@@ -126,6 +126,15 @@ class HomeFragment : Fragment() {
             binding.pillButton.isEnabled = state.isPillButtonEnabled
             binding.phoneButton.isEnabled = state.isPhoneButtonEnabled
         }
+        // Agregar aquí el código para verificar si el usuario ha verificado su cuenta
+        val user = auth.currentUser
+        if (user != null && !user.isEmailVerified) {
+            // El usuario no ha verificado su cuenta
+            // Mostrar un mensaje recordándole que debe verificar su dirección de correo electrónico
+            showErrorSnackbar("Por favor, verifica tu dirección de correo electrónico para poder continuar utilizando la aplicación.")
+            // Redirigir al usuario a la pantalla de inicio de sesión
+            navControl.navigate(R.id.action_homeFragment_to_signInFragment)
+        }
 
         val uid = auth.currentUser?.uid
         if (uid != null) {
@@ -180,7 +189,7 @@ class HomeFragment : Fragment() {
             val uid = user.uid
             val databaseRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
             databaseRef.child("name").get().addOnSuccessListener { dataSnapshot ->
-                val name = dataSnapshot.value.toString()
+                val name = dataSnapshot.value?.toString() ?: ""
                 val cal = Calendar.getInstance()
                 val hour = cal.get(Calendar.HOUR_OF_DAY)
                 val greeting = when {

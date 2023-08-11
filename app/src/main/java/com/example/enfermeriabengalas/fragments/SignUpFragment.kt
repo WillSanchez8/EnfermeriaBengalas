@@ -281,7 +281,9 @@ class SignUpFragment : Fragment() {
             isValid = validateField(verifyPass, binding.tilRepeatPasswordInput) && isValid
 
             // Validar si la contraseña tiene al menos 8 caracteres
-            if (isValid) {
+            if (!isValid) {
+                showErrorSnackbar("Por favor, complete todos los campos")
+            } else {
                 // Validar si la contraseña tiene al menos 8 caracteres
                 if (pass.length < 8) {
                     showErrorSnackbar("La contraseña debe tener al menos 8 caracteres")
@@ -311,30 +313,30 @@ class SignUpFragment : Fragment() {
                                     // Llamar a la función scheduleAccountDeletion
                                     scheduleAccountDeletion()
                                     navControl.navigate(R.id.action_signUpFragment_to_signInFragment)
+
+                                    //Guardar el nombre y el cargo del usuario en la base de datos
+                                    val uid = auth.currentUser?.uid
+                                    if (uid != null) {
+                                        databaseRef =
+                                            FirebaseDatabase.getInstance().reference.child("users").child(uid)
+                                        databaseRef.child("name").setValue(name).addOnCompleteListener { nameTask ->
+                                            if (!nameTask.isSuccessful) {
+                                                showErrorSnackbar("Error al guardar el nombre del usuario en la base de datos")
+                                            }
+                                            binding.progressBar2.visibility = View.GONE
+                                        }
+                                        databaseRef.child("cargo").setValue(cargo).addOnCompleteListener { cargoTask ->
+                                            if (!cargoTask.isSuccessful) {
+                                                showErrorSnackbar("Error al guardar el cargo del usuario en la base de datos")
+                                            }
+                                            binding.progressBar2.visibility = View.GONE
+                                        }
+                                    }
                                 } else {
                                     // Ocurrió un error al enviar el correo electrónico de verificación
                                     Snackbar.make(contextView, emailTask.exception?.message ?: "Ocurrió un error al enviar el correo electrónico de verificación", Snackbar.LENGTH_SHORT).show()
                                 }
                                 binding.progressBar2.visibility = View.GONE
-                            }
-
-                            //Guardar el nombre y el cargo del usuario en la base de datos
-                            val uid = auth.currentUser?.uid
-                            if (uid != null) {
-                                databaseRef =
-                                    FirebaseDatabase.getInstance().reference.child("users").child(uid)
-                                databaseRef.child("name").setValue(name).addOnCompleteListener { nameTask ->
-                                    if (!nameTask.isSuccessful) {
-                                        showErrorSnackbar("Error al guardar el nombre del usuario en la base de datos")
-                                    }
-                                    binding.progressBar2.visibility = View.GONE
-                                }
-                                databaseRef.child("cargo").setValue(cargo).addOnCompleteListener { cargoTask ->
-                                    if (!cargoTask.isSuccessful) {
-                                        showErrorSnackbar("Error al guardar el cargo del usuario en la base de datos")
-                                    }
-                                    binding.progressBar2.visibility = View.GONE
-                                }
                             }
                         } else {
                             when (task.exception) {
@@ -345,7 +347,7 @@ class SignUpFragment : Fragment() {
                                 else -> {
                                     Snackbar.make(
                                         contextView,
-                                        task.exception?.message ?: "Ocurrió un error",
+                                        task.exception?.message ?: "Ocurrió un error al crear la cuenta",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
@@ -358,10 +360,7 @@ class SignUpFragment : Fragment() {
                     // Mostrar un mensaje en el registro de la aplicación
                     showErrorSnackbar("No se puede mostrar el Snackbar porque la vista es nula")
                 }
-            } else {
-                showErrorSnackbar("Por favor, complete todos los campos")
             }
         }
     }
-
 }
