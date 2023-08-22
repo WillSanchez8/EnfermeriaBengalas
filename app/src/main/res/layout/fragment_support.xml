@@ -160,6 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/museomoderno_medium"
+                android:textAlignment="center"
                 android:textSize="17sp"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/app"/>
@@ -168,7 +169,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/museomoderno_medium"
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
@@ -222,6 +222,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
             <TextView
@@ -231,13 +232,15 @@
                 android:text="@string/Nom1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/Will_description"
-                android:fontFamily="@font/museomoderno_medium"
-                android:textSize="15sp"
-                android:text="@string/Will_description"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/museomoderno_medium"
+                android:text="@string/Will_description"
+                android:textSize="15sp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -266,7 +269,7 @@
             </LinearLayout>
             <TextView
                 android:id="@+id/Ari"
-
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/museomoderno_medium"
                 android:textSize="20sp"
                 android:text="@string/Nom2"
