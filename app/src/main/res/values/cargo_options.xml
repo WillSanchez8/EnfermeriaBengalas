@@ -4,8 +4,9 @@
         <item>Secretarios/as</item>
         <item>Directivos</item>
         <item>Orientadores</item>
+        <item>Pedagogos/as</item>
         <item>Profesores/as</item>
-        <item>Alumnos/as</item>
-        <item>Intendencia</item>
+        <!--<item>Alumnos/as</item>
+        <item>Intendencia</item>-->
     </string-array>
 </resources>

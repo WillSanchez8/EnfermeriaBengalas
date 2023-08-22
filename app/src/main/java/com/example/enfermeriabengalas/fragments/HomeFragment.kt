@@ -122,10 +122,12 @@ class HomeFragment : Fragment() {
         registerEvents()
         showGreeting()
 
+        /*
         viewModel.buttonState.observe(viewLifecycleOwner) { state ->
             binding.pillButton.isEnabled = state.isPillButtonEnabled
             binding.phoneButton.isEnabled = state.isPhoneButtonEnabled
-        }
+        }*/
+
         // Agregar aquí el código para verificar si el usuario ha verificado su cuenta
         val user = auth.currentUser
         if (user != null && !user.isEmailVerified) {
@@ -135,7 +137,7 @@ class HomeFragment : Fragment() {
             // Redirigir al usuario a la pantalla de inicio de sesión
             navControl.navigate(R.id.action_homeFragment_to_signInFragment)
         }
-
+        /*
         val uid = auth.currentUser?.uid
         if (uid != null) {
             val userRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
@@ -150,7 +152,7 @@ class HomeFragment : Fragment() {
                     showErrorSnackbar("Error al obtener el cargo del usuario")
                 }
             })
-        }
+        }*/
     }
 
     private fun init(view: View) {

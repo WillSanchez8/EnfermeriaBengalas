@@ -37,17 +37,17 @@ class MedicineViewModel : ViewModel() {
     val AVAILABILITY_CHANNEL_ID = "availability_channel"
     val AVAILABILITY_NOTIFICATION_ID = 2
     var lastCheckedDate: Calendar? = null
-    val buttonState = MutableLiveData<ButtonState>()
+    //val buttonState = MutableLiveData<ButtonState>()
 
     fun init(databaseRef: DatabaseReference) {
         this.databaseRef = databaseRef
     }
 
-    fun updateButtonState(cargo: String) {
+    /*fun updateButtonState(cargo: String) {
         val disabledCargos = listOf("Alumnos/as", "Intendencia", "Profesores/as")
         val isEnabled = !disabledCargos.contains(cargo)
         buttonState.value = ButtonState(isEnabled, isEnabled, isEnabled, isEnabled, isEnabled, isEnabled)
-    }
+    }*/
 
     fun getMedicines(categoryTitle: String) {
         // Get the reference to the medicines node in the database
@@ -283,18 +283,12 @@ class MedicineViewModel : ViewModel() {
             databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var lowAvailabilityCount = 0
-                    var zeroAvailabilityCount = 0
                     var highAvailabilityCount = 0
                     for (medicineSnapshot in snapshot.children) {
                         val medicine = medicineSnapshot.getValue(Medicine::class.java)
-                        if (medicine != null && medicine.quantity < 5) {
-                            lowAvailabilityCount++
-                        }
-                        if (medicine != null && medicine.quantity == 0) {
-                            zeroAvailabilityCount++
-                        }
-                        if (medicine != null && medicine.quantity >= 5) {
-                            highAvailabilityCount++
+                        when {
+                            medicine != null && medicine.quantity < 5 -> lowAvailabilityCount++
+                            medicine != null && medicine.quantity >= 5 -> highAvailabilityCount++
                         }
                     }
                     if (lowAvailabilityCount >= 5) {
@@ -305,18 +299,6 @@ class MedicineViewModel : ViewModel() {
                         // Hay suficientes medicamentos disponibles
                         // Notificar al usuario
                         sendHighAvailabilityNotification(context)
-                    }
-                    if (zeroAvailabilityCount >= 5) {
-                        // Hay muchos medicamentos con cantidad igual a 0
-                        // Programar una alarma para llamar a esta función cada 24 horas
-                        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                        val intent = Intent(context, MyBroadcastReceiver::class.java)
-                        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-                        } else {
-                            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-                        }
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + AlarmManager.INTERVAL_DAY, pendingIntent)
                     }
                 }
 
@@ -374,7 +356,7 @@ class MedicineViewModel : ViewModel() {
         }
     }
 }
-
+/*
 data class ButtonState(
     val isPillButtonEnabled: Boolean,
     val isPhoneButtonEnabled: Boolean,
@@ -382,4 +364,4 @@ data class ButtonState(
     val isDeleteMedicineEnabled: Boolean,
     val isPlusQuantityButtonEnabled: Boolean,
     val isMinusQuantityButtonEnabled: Boolean
-)
+)*/

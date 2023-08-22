@@ -94,7 +94,7 @@ class SearchFragment : Fragment() {
             }
         }, viewModel)
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        if (uid != null) {
+        /*if (uid != null) {
             val userRef = FirebaseDatabase.getInstance().reference.child("users").child(uid)
             userRef.child("cargo").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -108,7 +108,7 @@ class SearchFragment : Fragment() {
                     showErrorSnackbar("Error al obtener el cargo del usuario")
                 }
             })
-        }
+        }*/
         binding.medicinesRecyclerView.adapter = adapter
         binding.medicinesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

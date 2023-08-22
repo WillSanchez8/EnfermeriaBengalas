@@ -20,7 +20,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_medicines_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:text="@string/no_medicines"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/medicines_recycler_view"

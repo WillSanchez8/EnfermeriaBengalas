@@ -84,4 +84,5 @@
     <string name="TESCHA">TESCHA</string>
     <string name="icon_moon">Icono de luna</string>
     <string name="icon_sun">Icono de sol</string>
+    <string name="no_medicines">"Aún no hay medicamentos disponibles en esta sección 😔"</string>
 </resources>

@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.enfermeriabengalas.R
 import com.example.enfermeriabengalas.models.Medicine
-import com.example.enfermeriabengalas.viewmodel.ButtonState
+//import com.example.enfermeriabengalas.viewmodel.ButtonState
 import com.example.enfermeriabengalas.viewmodel.MedicineViewModel
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
@@ -29,14 +29,13 @@ class MedicineAdapter(
     val viewModel: MedicineViewModel
 ) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
 
-    var buttonState: ButtonState? = null
-
-    init {
+    //var buttonState: ButtonState? = null
+    /*init {
         viewModel.buttonState.observeForever { state ->
             buttonState = state
             notifyDataSetChanged()
         }
-    }
+    }*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewBinding = MedicineItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(viewBinding)
@@ -49,7 +48,6 @@ class MedicineAdapter(
             medicine.quantity in 1..4 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#F0E68C")) // Amarillo paja suave
             medicine.quantity == 0 -> holder.viewBinding.cardView.setCardBackgroundColor(Color.parseColor("#FFB6C1")) // Rojo suave
         }
-
 
         holder.medicineNameTextView.text = medicine.name
         holder.medicineDescriptionTextView.text = medicine.description
@@ -92,14 +90,14 @@ class MedicineAdapter(
             .setDuration(300) // Establecer la duración de la animación
             .start() // Iniciar la animación
 
-        val state = buttonState
+       /*val state = buttonState
         if (state != null) {
             holder.viewBinding.editButton.isEnabled = state.isEditMedicineEnabled
             holder.viewBinding.deleteButton.isEnabled = state.isDeleteMedicineEnabled
             holder.viewBinding.plusButton.isEnabled = state.isPlusQuantityButtonEnabled
             holder.viewBinding.minusButton.isEnabled = state.isMinusQuantityButtonEnabled
         }
-
+        */
         // Establecer los listeners para los botones
         holder.viewBinding.editButton.setOnClickListener {
             viewModel.medicineToEdit.value = medicine
@@ -115,9 +113,7 @@ class MedicineAdapter(
             listener.onMinusQuantityButtonClicked(medicine)
         }
     }
-
     override fun getItemCount(): Int = medicines.size
-
     inner class ViewHolder(val viewBinding: MedicineItemBinding) : RecyclerView.ViewHolder(viewBinding.root) {
         val medicineNameTextView = viewBinding.medicineName
         val medicineDescriptionTextView = viewBinding.medicineDescription

@@ -1,170 +1,175 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@drawable/gradiente"
-    tools:context=".fragments.SignInFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_signin_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/museomoderno_medium"
-        android:text="@string/signin"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="25dp"
-        card_view:cardCornerRadius="100dp"
-        card_view:cardElevation="4dp"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/tv_signin_title">
-
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/logo_bengala"
-            android:src="@drawable/bengala_icon" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_signin_form"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="4dp"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/cv_logo">
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            tools:context=".fragments.SignInFragment">
 
-            <TextView
-                android:id="@+id/tv_cargo_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cargo" />
+        <TextView
+            android:id="@+id/tv_signin_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/museomoderno_medium"
+            android:text="@string/signin"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold|italic"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/spinner_cargo"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="25dp"
+            card_view:cardCornerRadius="100dp"
+            card_view:cardElevation="4dp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/tv_signin_title">
+
+            <ImageView
+                android:id="@+id/iv_logo"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:entries="@array/cargo_options" />
+                android:layout_height="match_parent"
+                android:contentDescription="@string/logo_bengala"
+                android:src="@drawable/bengala_icon" />
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_email_input"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_signin_form"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="4dp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/cv_logo">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:errorEnabled="true">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email_input"
+                <TextView
+                    android:id="@+id/tv_cargo_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cargo" />
+
+                <Spinner
+                    android:id="@+id/spinner_cargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:entries="@array/cargo_options" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    card_view:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_email_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:errorEnabled="true"
-                card_view:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_password_input"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_password_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/contrasena"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    card_view:errorEnabled="true"
+                    card_view:passwordToggleEnabled="true">
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_password_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/contrasena"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tv_already_registered"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="12dp"
-        android:textColor="@color/md_theme_light_primary"
-        android:text="@string/no_registrado"
-        android:textSize="14sp"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/authTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/registrarse"
-        android:textColor="@color/seed"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
+        <TextView
+            android:id="@+id/tv_already_registered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/md_theme_light_primary"
+            android:text="@string/no_registrado"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="@string/iniciar_sesion"
-        android:textSize="20sp"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
+        <TextView
+            android:id="@+id/authTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="180dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/registrarse"
+            android:textColor="@color/seed"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
 
-    <TextView
-        android:id="@+id/forgotpassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/forgot_password"
-        android:textColor="@color/seed"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/btn_login" />
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="@string/iniciar_sesion"
+            android:textSize="20sp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/cv_signin_form" />
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressBar2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/md_theme_dark_onSecondary"
-        android:layout_marginTop="2dp"
-        android:visibility="gone"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintHorizontal_bias="0.5"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@+id/authTextView" />
+        <TextView
+            android:id="@+id/forgotpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/forgot_password"
+            android:textColor="@color/seed"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/btn_login" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/md_theme_dark_onSecondary"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/authTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

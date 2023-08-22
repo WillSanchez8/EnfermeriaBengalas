@@ -40,6 +40,6 @@ class SplashFragment : Fragment() {
                 //Navegar a la pantalla de login
                 navController.navigate(R.id.action_splashFragment_to_signInFragment)
             }
-        }, 2000)
+        }, 1500)
     }
 }

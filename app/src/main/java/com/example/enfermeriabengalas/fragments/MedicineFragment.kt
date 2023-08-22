@@ -46,11 +46,11 @@ class MedicineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity()).get(MedicineViewModel::class.java)
         init(view)
-        registerEvents()
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
             showErrorSnackbar(message)
         }
+
         // Create and set an adapter for the RecyclerView
         val adapter = MedicineAdapter(viewModel.medicines.value ?: emptyList(), object :
             MedicineAdapterListener {
@@ -92,6 +92,11 @@ class MedicineFragment : Fragment() {
         viewModel.medicines.observe(viewLifecycleOwner) { medicines ->
             adapter.medicines = medicines
             adapter.notifyDataSetChanged()
+            if(medicines.isEmpty()) {
+                binding.noMedicinesTextview.visibility = View.VISIBLE
+            } else {
+                binding.noMedicinesTextview.visibility = View.GONE
+            }
         }
     }
 
@@ -112,10 +117,6 @@ class MedicineFragment : Fragment() {
             viewModel.getMedicines(formattedTitle)
         }
         navControl = Navigation.findNavController(view)
-    }
-
-    private fun registerEvents() {
-
     }
 
     private fun showErrorSnackbar(message: String) {
