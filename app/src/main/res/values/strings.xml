@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Enfermeria Bengalas</string>
     <string name="hello_blank_fragment">Texto Prueba</string>
-    <string name="enfermeria_epoana">Enfermería EPOANA</string>
+    <string name="enfermeria_epoana">Enfermería Bengalas</string>
     <string name="bienvenido">Bienvenido</string>
     <string name="registrar">Registrar</string>
     <string name="registrarse">Registrarse</string>
